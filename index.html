@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Australian Drug Testing Dashboard | BITRE Road Safety Data</title>
+    <meta name="description" content="Interactive visualization of drug testing enforcement data across Australia (2008-2024)">
+
+    <!-- D3.js Library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Drug Testing Dashboard</h1>
+                <p class="nav-subtitle">Australian Road Safety Enforcement 2008-2024</p>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#landscape">Landscape</a></li>
+                <li><a href="#methods">Methods</a></li>
+                <li><a href="#demographics">Demographics</a></li>
+                <li><a href="#disruption">COVID Impact</a></li>
+                <li><a href="#insights">Insights</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h2 class="hero-title">Understanding Drug Testing Enforcement Across Australia</h2>
+            <p class="hero-description">
+                An interactive exploration of 17 years of road safety data from the Bureau of Infrastructure
+                and Transport Research Economics (BITRE), revealing patterns in drug testing, detection methods,
+                and enforcement outcomes across all Australian jurisdictions.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number">17</div>
+                    <div class="stat-label">Years of Data</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Jurisdictions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Drug Tests</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Overview Section -->
+        <section id="overview" class="section section-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Introduction</span>
+                    <h3 class="section-title">The Challenge of Drug-Impaired Driving</h3>
+                    <p class="section-description">
+                        Drug-impaired driving remains a critical road safety issue across Australia.
+                        This dashboard visualizes enforcement efforts, revealing where, when, and how
+                        authorities are tackling this challenge.
+                    </p>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="controls-panel">
+                    <div class="control-group">
+                        <label for="jurisdiction-filter">Jurisdiction</label>
+                        <select id="jurisdiction-filter" class="control-select">
+                            <option value="all">All Jurisdictions</option>
+                            <option value="NSW">New South Wales</option>
+                            <option value="VIC">Victoria</option>
+                            <option value="QLD">Queensland</option>
+                            <option value="SA">South Australia</option>
+                            <option value="WA">Western Australia</option>
+                            <option value="TAS">Tasmania</option>
+                            <option value="NT">Northern Territory</option>
+                            <option value="ACT">Australian Capital Territory</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="year-range">Year Range</label>
+                        <div class="range-container">
+                            <input type="range" id="year-range" class="control-range"
+                                   min="2008" max="2024" value="2024">
+                            <span id="year-display" class="range-value">2024</span>
+                        </div>
+                    </div>
+
+                    <button id="reset-filters" class="btn-secondary">Reset Filters</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Act 1: The Landscape -->
+        <section id="landscape" class="section section-white">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Act 1</span>
+                    <h3 class="section-title">The Landscape</h3>
+                    <p class="section-description">
+                        How has drug testing intensity evolved across Australian jurisdictions from 2015-2024?
+                    </p>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h4 class="chart-title">Drug Testing Intensity Over Time</h4>
+                        <p class="chart-subtitle">Tests per 100,000 population by jurisdiction</p>
+                    </div>
+                    <div id="chart-landscape" class="chart-area">
+                        <!-- Chart 1 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">📊</div>
+                            <p>Chart 1: Testing Intensity Evolution</p>
+                            <small>Choropleth Map + Line Chart</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> Where are we testing, and is effort increasing?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Act 2: The Methods -->
+        <section id="methods" class="section section-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Act 2</span>
+                    <h3 class="section-title">The Methods</h3>
+                    <p class="section-description">
+                        Which detection methods are most effective, and how has their usage changed over time?
+                    </p>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h4 class="chart-title">Detection Methods & Effectiveness</h4>
+                        <p class="chart-subtitle">Method mix and positive detection rates</p>
+                    </div>
+                    <div id="chart-methods" class="chart-area">
+                        <!-- Chart 2 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">📈</div>
+                            <p>Chart 2: Detection Method Analysis</p>
+                            <small>Stacked Area Chart + Comparison</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> Are we testing smarter or just testing more?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Act 3: The Demographics -->
+        <section id="demographics" class="section section-white">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Act 3</span>
+                    <h3 class="section-title">The Demographics</h3>
+                    <p class="section-description">
+                        Which age groups face the highest testing rates and positive detections?
+                    </p>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h4 class="chart-title">Testing by Age Group</h4>
+                        <p class="chart-subtitle">Test volumes and detection rates across demographics</p>
+                    </div>
+                    <div id="chart-demographics" class="chart-area">
+                        <!-- Chart 3 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">👥</div>
+                            <p>Chart 3: Age Group Analysis</p>
+                            <small>Population Pyramid / Distribution</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> Are we targeting the right drivers?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Act 4: The Disruption -->
+        <section id="disruption" class="section section-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Act 4</span>
+                    <h3 class="section-title">The Disruption</h3>
+                    <p class="section-description">
+                        How did COVID-19 disrupt drug testing enforcement, and has activity recovered?
+                    </p>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h4 class="chart-title">COVID-19 Impact Analysis</h4>
+                        <p class="chart-subtitle">Before, during, and after the pandemic (2018-2024)</p>
+                    </div>
+                    <div id="chart-covid" class="chart-area">
+                        <!-- Chart 4 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">🦠</div>
+                            <p>Chart 4: COVID Impact Comparison</p>
+                            <small>Before/During/After Analysis</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> What happened when the world stopped?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Act 5: Actionable Insights -->
+        <section id="insights" class="section section-white">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Act 5</span>
+                    <h3 class="section-title">Actionable Insights</h3>
+                    <p class="section-description">
+                        Which jurisdictions show the greatest gap between testing effort and road safety outcomes?
+                    </p>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h4 class="chart-title">Resource Allocation Analysis</h4>
+                        <p class="chart-subtitle">Testing effort vs. safety outcomes by jurisdiction</p>
+                    </div>
+                    <div id="chart-insights" class="chart-area">
+                        <!-- Chart 5 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">🎯</div>
+                            <p>Chart 5: Gap Analysis</p>
+                            <small>Scatter Plot with Quadrant Analysis</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> Where should we focus next?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion Section -->
+        <section id="conclusion" class="section section-dark">
+            <div class="container">
+                <h3 class="section-title-white">Key Takeaways</h3>
+                <div class="takeaways-grid">
+                    <div class="takeaway-card">
+                        <div class="takeaway-icon">📍</div>
+                        <h4>Geographic Patterns</h4>
+                        <p>Testing intensity varies significantly across jurisdictions, with [jurisdiction] leading in per-capita enforcement.</p>
+                    </div>
+                    <div class="takeaway-card">
+                        <div class="takeaway-icon">🔬</div>
+                        <h4>Method Evolution</h4>
+                        <p>Detection methods have evolved, with [method] showing the highest effectiveness rates.</p>
+                    </div>
+                    <div class="takeaway-card">
+                        <div class="takeaway-icon">⚠️</div>
+                        <h4>COVID Impact</h4>
+                        <p>Pandemic disruptions reduced testing by [X]%, with recovery patterns varying by state.</p>
+                    </div>
+                    <div class="takeaway-card">
+                        <div class="takeaway-icon">💡</div>
+                        <h4>Future Focus</h4>
+                        <p>Data suggests [jurisdictions] could benefit from increased testing resources.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About This Project</h4>
+                    <p>Created for COS30045 Data Visualization</p>
+                    <p>Swinburne University of Technology</p>
+                    <p>Semester 2, 2025</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Data Source</h4>
+                    <p>Bureau of Infrastructure and Transport Research Economics (BITRE)</p>
+                    <p>Dataset: Police Enforcement - Drug Tests (2008-2024)</p>
+                    <p><a href="https://www.bitre.gov.au" target="_blank">Visit BITRE Website</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Technologies</h4>
+                    <p>D3.js v7</p>
+                    <p>HTML5, CSS3, JavaScript</p>
+                    <p>Hosted on Vercel</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Team</h4>
+                    <p>Group No: [TBD]</p>
+                    <p>[Team Member Names]</p>
+                    <p>GitHub: <a href="#" target="_blank">[Repository Link]</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Drug Testing Dashboard. Data visualization project for educational purposes.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="main.js"></script>
+
+</body>
+</html>
