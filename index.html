@@ -11,6 +11,9 @@
 
     <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Preload D3 and data loader (scripts will be loaded at end of body) -->
+    <link rel="preload" href="loaddata.js" as="script">
 </head>
 <body>
 
@@ -28,6 +31,7 @@
                 <li><a href="#demographics">Demographics</a></li>
                 <li><a href="#disruption">COVID Impact</a></li>
                 <li><a href="#insights">Insights</a></li>
+                <li><a href="#enforcement">Enforcement</a></li>
             </ul>
         </div>
     </nav>
@@ -244,26 +248,103 @@
                     <span class="section-tag">Act 5</span>
                     <h3 class="section-title">Actionable Insights</h3>
                     <p class="section-description">
-                        Which jurisdictions show the greatest gap between testing effort and road safety outcomes?
+                        Understanding positive test rates and drug detection patterns across Australia
                     </p>
                 </div>
 
+                <!-- Chart 5: Highest Positive Drug Tests by Jurisdiction -->
                 <div class="chart-container">
                     <div class="chart-header">
-                        <h4 class="chart-title">Resource Allocation Analysis</h4>
-                        <p class="chart-subtitle">Testing effort vs. safety outcomes by jurisdiction</p>
+                        <h4 class="chart-title">Q5: Highest Positive Drug Tests by Jurisdiction</h4>
+                        <p class="chart-subtitle">Which jurisdictions show the highest positive drug test rates?</p>
                     </div>
-                    <div id="chart-insights" class="chart-area">
+                    <div id="chart-5-positive-tests" class="chart-area">
                         <!-- Chart 5 will be inserted here by D3.js -->
                         <div class="chart-placeholder">
                             <div class="placeholder-icon">🎯</div>
-                            <p>Chart 5: Gap Analysis</p>
+                            <p>Chart 5: Positive Test Analysis</p>
                             <small>Scatter Plot with Quadrant Analysis</small>
                         </div>
                     </div>
                     <div class="chart-footer">
                         <p class="chart-insight">
                             <strong>Key Insight:</strong> Where should we focus next?
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Chart 6: Drug Types Detected -->
+                <div class="chart-container" style="margin-top: 2rem;">
+                    <div class="chart-header">
+                        <h4 class="chart-title">Q6: Most Detected Drug Types</h4>
+                        <p class="chart-subtitle">What drug types are most detected across Australia?</p>
+                    </div>
+                    <div id="chart-6-drug-types" class="chart-area">
+                        <!-- Chart 6 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">💊</div>
+                            <p>Chart 6: Drug Type Distribution</p>
+                            <small>Bar Chart</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> Understanding what drugs we're finding on our roads
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Act 6: Enforcement Response (Q7 & Q8 - YOUR CHARTS) -->
+        <section id="enforcement" class="section section-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Act 6</span>
+                    <h3 class="section-title">Enforcement Response</h3>
+                    <p class="section-description">
+                        How do authorities respond to positive drug tests, and does severity vary by jurisdiction?
+                    </p>
+                </div>
+
+                <!-- Chart 7: Correlation Between Positive Tests and Enforcement Actions -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h4 class="chart-title">Q7: Enforcement Response Correlation</h4>
+                        <p class="chart-subtitle">How do fines, arrests, and charges correlate with positive tests?</p>
+                    </div>
+                    <div id="chart-7-correlation" class="chart-area">
+                        <!-- Chart 7 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">📊</div>
+                            <p>Chart 7: Positive Tests vs Enforcement Actions</p>
+                            <small>Scatter Plots (Fines, Arrests, Charges)</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> Understanding enforcement response patterns
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Chart 8: Enforcement Severity by Jurisdiction -->
+                <div class="chart-container" style="margin-top: 2rem;">
+                    <div class="chart-header">
+                        <h4 class="chart-title">Q8: Enforcement Severity by Jurisdiction</h4>
+                        <p class="chart-subtitle">Total fines, arrests, and charges across Australian states</p>
+                    </div>
+                    <div id="chart-8-severity" class="chart-area">
+                        <!-- Chart 8 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">⚖️</div>
+                            <p>Chart 8: Enforcement Severity Comparison</p>
+                            <small>Grouped/Stacked Bar Chart</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> Which jurisdictions are toughest on drug driving?
                         </p>
                     </div>
                 </div>
@@ -336,8 +417,22 @@
         </div>
     </footer>
 
-    <!-- Custom JavaScript -->
+    <!-- Custom JavaScript - Load in correct order -->
+    <!-- 1. Data loader must load first -->
+    <script src="loaddata.js"></script>
+
+    <!-- 2. Main navigation and controls -->
     <script src="main.js"></script>
+
+    <!-- 3. Individual chart scripts (add as you create them) -->
+    <!-- <script src="chart1-landscape.js"></script> -->
+    <!-- <script src="chart2-methods.js"></script> -->
+    <!-- <script src="chart3-demographics.js"></script> -->
+    <!-- <script src="chart4-covid.js"></script> -->
+    <!-- <script src="chart5-positive-tests.js"></script> -->
+    <!-- <script src="chart6-drug-types.js"></script> -->
+    <!-- <script src="chart7-correlation.js"></script> -->
+    <!-- <script src="chart8-severity.js"></script> -->
 
 </body>
 </html>
