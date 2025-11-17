@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initControls();
     initScrollEffects();
+    initHeroAnimations();
 
     // Load data and initialize charts (placeholder for now)
     // loadData();
@@ -147,6 +148,47 @@ function initScrollEffects() {
     //     section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     //     sectionObserver.observe(section);
     // });
+}
+
+// ===================================
+// HERO ANIMATIONS
+// ===================================
+
+function initHeroAnimations() {
+    // Animate counting numbers after stat cards appear
+    setTimeout(() => {
+        animateCounters();
+    }, 1400); // Start after stat cards have animated in (0.8s + 0.6s)
+}
+
+function animateCounters() {
+    const counters = document.querySelectorAll('.stat-number[data-count]');
+
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-count'));
+        const suffix = counter.getAttribute('data-suffix') || '';
+        const duration = 2000; // 2 seconds
+        const startTime = performance.now();
+
+        function updateCounter(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Easing function (ease-out cubic)
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const current = Math.floor(easeOut * target);
+
+            counter.textContent = current + suffix;
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.textContent = target + suffix;
+            }
+        }
+
+        requestAnimationFrame(updateCounter);
+    });
 }
 
 // ===================================

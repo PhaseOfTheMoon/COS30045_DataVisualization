@@ -130,6 +130,27 @@ body {
     color: var(--text-white);
     padding: var(--spacing-2xl) 0;
     text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Animated background gradient */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+    animation: heroGlow 15s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes heroGlow {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -30px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
 }
 
 .hero-title {
@@ -137,14 +158,26 @@ body {
     font-weight: 700;
     margin-bottom: var(--spacing-md);
     line-height: 1.2;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: heroFadeInUp 0.8s ease-out 0.2s forwards;
 }
 
 .hero-description {
     font-size: 1.125rem;
     max-width: 800px;
     margin: 0 auto var(--spacing-xl);
-    opacity: 0.95;
+    opacity: 0;
     line-height: 1.8;
+    transform: translateY(30px);
+    animation: heroFadeInUp 0.8s ease-out 0.5s forwards;
+}
+
+@keyframes heroFadeInUp {
+    to {
+        opacity: 0.95;
+        transform: translateY(0);
+    }
 }
 
 .hero-stats {
@@ -160,6 +193,33 @@ body {
     padding: var(--spacing-md) var(--spacing-lg);
     border-radius: 12px;
     min-width: 150px;
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.stat-card:nth-child(1) {
+    animation: statCardEntrance 0.6s ease-out 0.8s forwards;
+}
+
+.stat-card:nth-child(2) {
+    animation: statCardEntrance 0.6s ease-out 1s forwards;
+}
+
+.stat-card:nth-child(3) {
+    animation: statCardEntrance 0.6s ease-out 1.2s forwards;
+}
+
+@keyframes statCardEntrance {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.stat-card:hover {
+    transform: translateY(-5px) scale(1.05);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .stat-number {
