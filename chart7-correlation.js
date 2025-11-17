@@ -115,48 +115,27 @@
 
     let processedData = []; // Store processed data globally for view switching
 
-    // Load data using centralized dataLoader
-    dataLoader.loadDrugTests().then(data => {
+    // Load pre-processed CSV file (already aggregated by teammate)
+    d3.csv("./data/FinArrChrByPositiveTest.csv", d3.autoType).then(data => {
         console.log('Chart 7: Data loaded', data.length, 'records');
+        console.log('Chart 7: Sample data:', data[0]);
 
-        // Filter and aggregate data
-        // Group by JURISDICTION and YEAR to get meaningful scatter points
-        const aggregated = d3.rollup(
-            data,
-            // Aggregation function: sum all enforcement metrics
-            v => ({
-                positiveTests: d3.sum(v, d => d.COUNT || 0),
-                fines: d3.sum(v, d => d.FINES || 0),
-                arrests: d3.sum(v, d => d.ARRESTS || 0),
-                charges: d3.sum(v, d => d.CHARGES || 0)
-            }),
-            // Group by jurisdiction and year
-            d => d.JURISDICTION,
-            d => d.YEAR
-        );
+        // Data is already processed, just rename columns for easier use
+        processedData = data.map(d => ({
+            jurisdiction: d.JURISDICTION,
+            count: d["Count(BEST_DETECTION_METHOD)"],
+            fines: d["Sum(FINES)"],
+            arrests: d["Sum(ARRESTS)"],
+            charges: d["Sum(CHARGES)"]
+        }));
 
-        // Convert nested Map to flat array for D3
-        processedData = [];
-        aggregated.forEach((yearMap, jurisdiction) => {
-            yearMap.forEach((values, year) => {
-                processedData.push({
-                    jurisdiction: jurisdiction,
-                    year: year,
-                    positiveTests: values.positiveTests,
-                    fines: values.fines,
-                    arrests: values.arrests,
-                    charges: values.charges
-                });
-            });
-        });
-
-        // Filter out invalid data points (zero or missing values)
+        // Filter out invalid data points (zero values)
         processedData = processedData.filter(d =>
-            d.positiveTests > 0 &&
+            d.count > 0 &&
             (d.fines > 0 || d.arrests > 0 || d.charges > 0)
         );
 
-        console.log('Chart 7: Processed data points:', processedData.length);
+        console.log('Chart 7: Valid data points:', processedData.length);
 
         // Draw initial chart (default view: fines)
         updateChart(processedData, currentView);
@@ -191,9 +170,9 @@
         // SCALES
         // ===================================
 
-        // X-axis: Positive test count (linear scale)
+        // X-axis: Count of best detection method (linear scale)
         const xScale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.positiveTests)])
+            .domain([0, d3.max(data, d => d.count)])
             .range([0, width])
             .nice(); // Round to nice values
 
@@ -227,7 +206,7 @@
             .attr("fill", "#374151")
             .attr("font-size", "14px")
             .attr("font-weight", "600")
-            .text("Number of Positive Drug Tests");
+            .text("Count (Best Detection Method)");
 
         // Y-axis
         const yAxis = d3.axisLeft(yScale)
@@ -279,7 +258,7 @@
             .data(data)
             .join("circle")
             .attr("class", "dot")
-            .attr("cx", d => xScale(d.positiveTests))
+            .attr("cx", d => xScale(d.count))
             .attr("cy", d => yScale(d[yField]))
             .attr("r", 0) // Start with radius 0 for animation
             .attr("fill", d => colorScale(d.jurisdiction))
@@ -303,8 +282,8 @@
                     .style("opacity", 1);
 
                 tooltip.html(`
-                    <strong>${d.jurisdiction} - ${d.year}</strong><br/>
-                    Positive Tests: <strong>${d3.format(",")(d.positiveTests)}</strong><br/>
+                    <strong>${d.jurisdiction}</strong><br/>
+                    Count: <strong>${d3.format(",")(d.count)}</strong><br/>
                     ${yLabel}: <strong>${d3.format(",")(d[yField])}</strong>
                 `)
                     .style("left", (event.pageX + 15) + "px")

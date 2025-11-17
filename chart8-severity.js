@@ -62,27 +62,25 @@
     // DATA LOADING AND PROCESSING
     // ===================================
 
-    dataLoader.loadDrugTests().then(data => {
+    // Load pre-processed CSV file (already aggregated by teammate)
+    d3.csv("./data/FinArrChrByJurisdiction.csv", d3.autoType).then(data => {
         console.log('Chart 8: Data loaded', data.length, 'records');
+        console.log('Chart 8: Sample data:', data[0]);
 
-        // Aggregate by jurisdiction: sum all enforcement actions
-        const aggregated = d3.rollup(
-            data,
-            v => ({
-                fines: d3.sum(v, d => d.FINES || 0),
-                arrests: d3.sum(v, d => d.ARRESTS || 0),
-                charges: d3.sum(v, d => d.CHARGES || 0)
-            }),
-            d => d.JURISDICTION
-        );
+        // Data is in "long" format, need to convert to "wide" format
+        // Group by jurisdiction and pivot metrics
+        const grouped = d3.group(data, d => d.JURISDICTION);
 
-        // Convert to array format for D3
-        const processedData = Array.from(aggregated, ([jurisdiction, values]) => ({
-            jurisdiction: jurisdiction,
-            fines: values.fines,
-            arrests: values.arrests,
-            charges: values.charges
-        }));
+        const processedData = Array.from(grouped, ([jurisdiction, rows]) => {
+            const result = { jurisdiction: jurisdiction };
+            rows.forEach(row => {
+                // Map column names to simpler keys
+                if (row.ColumnNames === "Sum(ARRESTS)") result.arrests = row.ColumnValues;
+                if (row.ColumnNames === "Sum(FINES)") result.fines = row.ColumnValues;
+                if (row.ColumnNames === "Sum(CHARGES)") result.charges = row.ColumnValues;
+            });
+            return result;
+        });
 
         console.log('Chart 8: Processed data:', processedData);
 
