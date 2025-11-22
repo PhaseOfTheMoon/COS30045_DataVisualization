@@ -6,11 +6,19 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Dashboard initialized');
 
+    // Ensure page starts at top
+    window.scrollTo(0, 0);
+
+    // Lock scrolling on hero section initially
+    document.body.classList.add('hero-active');
+
     // Initialize all components
     initNavigation();
     initControls();
     initScrollEffects();
     initHeroAnimations();
+    initExploreButton();
+    initScrollAnimations();
 
     // Load data and initialize charts (placeholder for now)
     // loadData();
@@ -319,6 +327,92 @@ function getJurisdictionColor(jurisdiction) {
         'ACT': '#6366f1'
     };
     return colorMap[jurisdiction] || '#6b7280';
+}
+
+// ===================================
+// EXPLORE BUTTON (Hero Section)
+// ===================================
+
+function initExploreButton() {
+    const exploreBtn = document.getElementById('explore-button');
+    const overviewSection = document.querySelector('#overview');
+
+    if (exploreBtn && overviewSection) {
+        exploreBtn.addEventListener('click', function() {
+            // Unlock scrolling
+            document.body.classList.remove('hero-active');
+
+            // Small delay to ensure body is unlocked before scrolling
+            setTimeout(() => {
+                // Scroll to overview section
+                const navHeight = 70;
+                const targetPosition = overviewSection.offsetTop - navHeight;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+
+                // Update URL hash
+                history.replaceState(null, '', '#overview');
+            }, 50);
+        });
+    }
+}
+
+// ===================================
+// SCROLL ANIMATIONS (Storytelling)
+// ===================================
+
+function initScrollAnimations() {
+    const navbar = document.querySelector('.navbar');
+    const hero = document.querySelector('.hero');
+    const sections = document.querySelectorAll('.section');
+
+    // Intersection Observer for navbar appearance and scroll locking
+    const navbarObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    // Hero is out of view, show navbar
+                    navbar.classList.add('visible');
+                } else {
+                    // Hero is in view, hide navbar and re-lock scrolling
+                    navbar.classList.remove('visible');
+                    document.body.classList.add('hero-active');
+
+                    // Scroll back to top of hero
+                    window.scrollTo(0, 0);
+                }
+            });
+        },
+        {
+            threshold: 0.1
+        }
+    );
+
+    if (hero) {
+        navbarObserver.observe(hero);
+    }
+
+    // Intersection Observer for section animations
+    const sectionObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        },
+        {
+            threshold: 0.15,
+            rootMargin: '0px 0px -100px 0px'
+        }
+    );
+
+    sections.forEach(section => {
+        sectionObserver.observe(section);
+    });
 }
 
 // ===================================
