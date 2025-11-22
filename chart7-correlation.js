@@ -1,6 +1,6 @@
 // ===================================
-// CHART 7: ENFORCEMENT RESPONSE CORRELATION
-// Scatter plots showing correlation between positive drug tests and enforcement actions
+// CHART 7: ENFORCEMENT RESPONSE CORRELATION HEATMAP
+// Heatmap showing relationship between positive drug tests and enforcement actions
 // Research Question 7: How do fines, arrests, and charges correlate with number of positive tests?
 // ===================================
 
@@ -10,8 +10,11 @@
     // ===================================
 
     // Margin convention for D3.js charts
-    const margin = { top: 40, right: 30, bottom: 60, left: 80 };
+    const margin = { top: 60, right: 120, bottom: 80, left: 120 };
     const container = d3.select("#chart-7-correlation");
+
+    // Remove placeholder
+    container.select(".chart-placeholder").remove();
 
     // Create responsive SVG with viewBox
     const svg = container.append("svg")
@@ -32,249 +35,237 @@
 
     // Create tooltip div for interactive data display
     const tooltip = d3.select("body").append("div")
-        .attr("class", "tooltip")
+        .attr("class", "chart7-tooltip")
         .style("position", "absolute")
-        .style("padding", "10px")
-        .style("background", "rgba(0, 0, 0, 0.8)")
+        .style("padding", "12px")
+        .style("background", "rgba(0, 0, 0, 0.85)")
         .style("color", "#fff")
-        .style("border-radius", "5px")
+        .style("border-radius", "6px")
         .style("pointer-events", "none")
         .style("opacity", 0)
-        .style("font-size", "12px");
-
-    // ===================================
-    // VIEW CONTROL BUTTONS
-    // ===================================
-
-    // Create button container for switching between enforcement types
-    const buttonContainer = container.insert("div", "svg")
-        .style("text-align", "center")
-        .style("margin-bottom", "15px");
-
-    // Button data: each represents one enforcement type
-    const viewOptions = [
-        { id: "fines", label: "Fines vs Positive Tests", color: "#f59e0b" },
-        { id: "arrests", label: "Arrests vs Positive Tests", color: "#ef4444" },
-        { id: "charges", label: "Charges vs Positive Tests", color: "#8b5cf6" }
-    ];
-
-    // Current view state (default: fines)
-    let currentView = "fines";
-
-    // Create toggle buttons for each view
-    const buttons = buttonContainer.selectAll("button")
-        .data(viewOptions)
-        .join("button")
-        .text(d => d.label)
-        .style("padding", "8px 16px")
-        .style("margin", "0 5px")
-        .style("border", "2px solid #e5e7eb")
-        .style("border-radius", "6px")
-        .style("background", d => d.id === currentView ? d.color : "#fff")
-        .style("color", d => d.id === currentView ? "#fff" : "#374151")
-        .style("font-weight", "600")
-        .style("cursor", "pointer")
-        .style("transition", "all 0.3s ease")
-        .on("click", function(event, d) {
-            // Update current view
-            currentView = d.id;
-
-            // Update button styles
-            buttons
-                .style("background", btn => btn.id === currentView ? btn.color : "#fff")
-                .style("color", btn => btn.id === currentView ? "#fff" : "#374151");
-
-            // Redraw chart with new view
-            updateChart(processedData, currentView);
-        });
-
-    // ===================================
-    // COLOR SCALE FOR JURISDICTIONS
-    // ===================================
-
-    // Consistent color mapping for all Australian jurisdictions
-    const jurisdictionColors = {
-        'NSW': '#2563eb',
-        'VIC': '#0891b2',
-        'QLD': '#f59e0b',
-        'SA': '#ef4444',
-        'WA': '#8b5cf6',
-        'TAS': '#10b981',
-        'NT': '#f97316',
-        'ACT': '#6366f1'
-    };
-
-    // D3 color scale
-    const colorScale = d3.scaleOrdinal()
-        .domain(Object.keys(jurisdictionColors))
-        .range(Object.values(jurisdictionColors));
+        .style("font-size", "13px")
+        .style("box-shadow", "0 4px 6px rgba(0,0,0,0.3)")
+        .style("z-index", 10000);
 
     // ===================================
     // DATA LOADING AND PROCESSING
     // ===================================
 
-    let processedData = []; // Store processed data globally for view switching
+    // Load pre-processed CSV file
+    d3.csv("./data/FinArrChrByPositiveTest.csv", d3.autoType).then(rawData => {
+        console.log('Chart 7: Data loaded', rawData.length, 'records');
+        console.log('Chart 7: Sample data:', rawData.slice(0, 3));
 
-    // Load pre-processed CSV file (already aggregated by teammate)
-    d3.csv("./data/FinArrChrByPositiveTest.csv", d3.autoType).then(data => {
-        console.log('Chart 7: Data loaded', data.length, 'records');
-        console.log('Chart 7: Sample data:', data[0]);
+        // Process data for heatmap
+        // Aggregate by jurisdiction and enforcement type to get average positive test prediction
+        const processedData = processDataForHeatmap(rawData);
 
-        // Data is already processed, just rename columns for easier use
-        processedData = data.map(d => ({
-            jurisdiction: d.JURISDICTION,
-            count: d["Count(BEST_DETECTION_METHOD)"],
-            fines: d["Sum(FINES)"],
-            arrests: d["Sum(ARRESTS)"],
-            charges: d["Sum(CHARGES)"]
-        }));
+        console.log('Chart 7: Processed heatmap data:', processedData);
 
-        // Filter out invalid data points (zero values)
-        processedData = processedData.filter(d =>
-            d.count > 0 &&
-            (d.fines > 0 || d.arrests > 0 || d.charges > 0)
-        );
-
-        console.log('Chart 7: Valid data points:', processedData.length);
-
-        // Draw initial chart (default view: fines)
-        updateChart(processedData, currentView);
+        // Draw heatmap
+        drawHeatmap(processedData);
 
     }).catch(error => {
         console.error('Chart 7: Error loading data:', error);
         container.append("p")
-            .style("color", "red")
+            .style("color", "#ef4444")
             .style("text-align", "center")
             .style("padding", "20px")
+            .style("font-weight", "600")
             .text("Error loading data. Please check the console.");
     });
 
     // ===================================
-    // CHART UPDATE FUNCTION
+    // DATA PROCESSING FUNCTION
     // ===================================
 
     /**
-     * Updates the scatter plot based on selected view
-     * @param {Array} data - Processed data array
-     * @param {String} view - Current view ('fines', 'arrests', or 'charges')
+     * Process raw data into heatmap format
+     * Creates 3x8 matrix: 3 enforcement types × 8 jurisdictions
      */
-    function updateChart(data, view) {
-        // Clear previous chart elements
-        g.selectAll("*").remove();
+    function processDataForHeatmap(data) {
+        const heatmapData = [];
 
-        // Determine Y-axis field based on current view
-        const yField = view; // 'fines', 'arrests', or 'charges'
-        const yLabel = view.charAt(0).toUpperCase() + view.slice(1); // Capitalize
+        // Define enforcement types (rows)
+        const enforcementTypes = ['FINES', 'ARRESTS', 'CHARGES'];
+
+        // Define jurisdictions (columns)
+        const jurisdictions = ['ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA'];
+
+        // For each enforcement type
+        enforcementTypes.forEach(enfType => {
+            // For each jurisdiction
+            jurisdictions.forEach(jurisdiction => {
+                // Filter data for this combination
+                const filtered = data.filter(d =>
+                    d.JURISDICTION === jurisdiction
+                );
+
+                if (filtered.length === 0) {
+                    heatmapData.push({
+                        enforcement: enfType,
+                        jurisdiction: jurisdiction,
+                        value: 0,
+                        count: 0
+                    });
+                    return;
+                }
+
+                // Calculate average positive test prediction based on enforcement type
+                let sum = 0;
+                let count = 0;
+
+                filtered.forEach(d => {
+                    // Only count records where the specific enforcement type has value > 0
+                    if (enfType === 'FINES' && d.FINES > 0) {
+                        sum += d.prediction;
+                        count++;
+                    } else if (enfType === 'ARRESTS' && d.ARRESTS > 0) {
+                        sum += d.prediction;
+                        count++;
+                    } else if (enfType === 'CHARGES' && d.CHARGES > 0) {
+                        sum += d.prediction;
+                        count++;
+                    }
+                });
+
+                // Calculate average (or 0 if no data)
+                const avgValue = count > 0 ? sum / count : 0;
+
+                heatmapData.push({
+                    enforcement: enfType,
+                    jurisdiction: jurisdiction,
+                    value: avgValue,
+                    count: count
+                });
+            });
+        });
+
+        return heatmapData;
+    }
+
+    // ===================================
+    // HEATMAP DRAWING FUNCTION
+    // ===================================
+
+    function drawHeatmap(data) {
+        // Define dimensions
+        const enforcementTypes = ['FINES', 'ARRESTS', 'CHARGES'];
+        const jurisdictions = ['ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA'];
+
+        // Calculate cell dimensions
+        const cellWidth = width / jurisdictions.length;
+        const cellHeight = height / enforcementTypes.length;
 
         // ===================================
-        // SCALES
+        // COLOR SCALE
         // ===================================
 
-        // X-axis: Count of best detection method (linear scale)
-        const xScale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.count)])
+        // Get min and max values for color scale
+        const maxValue = d3.max(data, d => d.value) || 1;
+        const minValue = 0;
+
+        // Color scale: white (low) to deep blue (high)
+        const colorScale = d3.scaleSequential()
+            .domain([minValue, maxValue])
+            .interpolator(d3.interpolateBlues);
+
+        // ===================================
+        // X-AXIS (JURISDICTIONS)
+        // ===================================
+
+        const xScale = d3.scaleBand()
+            .domain(jurisdictions)
             .range([0, width])
-            .nice(); // Round to nice values
+            .padding(0.05);
 
-        // Y-axis: Enforcement action count (linear scale)
-        const yScale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d[yField])])
-            .range([height, 0])
-            .nice();
-
-        // ===================================
-        // AXES
-        // ===================================
-
-        // X-axis
-        const xAxis = d3.axisBottom(xScale)
-            .ticks(8)
-            .tickFormat(d => d3.format(",.0f")(d)); // Format with thousands separator
-
-        g.append("g")
+        const xAxis = g.append("g")
             .attr("class", "x-axis")
-            .attr("transform", `translate(0,${height})`)
-            .call(xAxis)
-            .selectAll("text")
-            .style("font-size", "12px");
+            .attr("transform", `translate(0, ${height + 5})`);
+
+        xAxis.selectAll("text")
+            .data(jurisdictions)
+            .join("text")
+            .attr("x", d => xScale(d) + xScale.bandwidth() / 2)
+            .attr("y", 20)
+            .attr("text-anchor", "middle")
+            .attr("font-size", "14px")
+            .attr("font-weight", "600")
+            .attr("fill", "#374151")
+            .text(d => d);
 
         // X-axis label
         g.append("text")
             .attr("x", width / 2)
-            .attr("y", height + 45)
+            .attr("y", height + 55)
             .attr("text-anchor", "middle")
-            .attr("fill", "#374151")
+            .attr("font-size", "15px")
+            .attr("font-weight", "700")
+            .attr("fill", "#1f2937")
+            .text("Jurisdiction");
+
+        // ===================================
+        // Y-AXIS (ENFORCEMENT TYPES)
+        // ===================================
+
+        const yScale = d3.scaleBand()
+            .domain(enforcementTypes)
+            .range([0, height])
+            .padding(0.05);
+
+        const yAxis = g.append("g")
+            .attr("class", "y-axis")
+            .attr("transform", `translate(-5, 0)`);
+
+        yAxis.selectAll("text")
+            .data(enforcementTypes)
+            .join("text")
+            .attr("x", -10)
+            .attr("y", d => yScale(d) + yScale.bandwidth() / 2)
+            .attr("text-anchor", "end")
+            .attr("dominant-baseline", "middle")
             .attr("font-size", "14px")
             .attr("font-weight", "600")
-            .text("Count (Best Detection Method)");
-
-        // Y-axis
-        const yAxis = d3.axisLeft(yScale)
-            .ticks(8)
-            .tickFormat(d => d3.format(",.0f")(d));
-
-        g.append("g")
-            .attr("class", "y-axis")
-            .call(yAxis)
-            .selectAll("text")
-            .style("font-size", "12px");
+            .attr("fill", "#374151")
+            .text(d => d.charAt(0) + d.slice(1).toLowerCase());
 
         // Y-axis label
         g.append("text")
             .attr("transform", "rotate(-90)")
             .attr("x", -height / 2)
-            .attr("y", -60)
+            .attr("y", -80)
             .attr("text-anchor", "middle")
-            .attr("fill", "#374151")
-            .attr("font-size", "14px")
-            .attr("font-weight", "600")
-            .text(`Number of ${yLabel}`);
+            .attr("font-size", "15px")
+            .attr("font-weight", "700")
+            .attr("fill", "#1f2937")
+            .text("Enforcement Type");
 
         // ===================================
-        // GRID LINES (for easier reading)
+        // HEATMAP CELLS
         // ===================================
 
-        g.append("g")
-            .attr("class", "grid")
-            .attr("opacity", 0.1)
-            .call(d3.axisLeft(yScale)
-                .tickSize(-width)
-                .tickFormat(""));
-
-        g.append("g")
-            .attr("class", "grid")
-            .attr("opacity", 0.1)
-            .attr("transform", `translate(0,${height})`)
-            .call(d3.axisBottom(xScale)
-                .tickSize(-height)
-                .tickFormat(""));
-
-        // ===================================
-        // SCATTER PLOT CIRCLES
-        // ===================================
-
-        // Draw circles for each data point
-        g.selectAll(".dot")
+        const cells = g.selectAll(".heatmap-cell")
             .data(data)
-            .join("circle")
-            .attr("class", "dot")
-            .attr("cx", d => xScale(d.count))
-            .attr("cy", d => yScale(d[yField]))
-            .attr("r", 0) // Start with radius 0 for animation
-            .attr("fill", d => colorScale(d.jurisdiction))
-            .attr("opacity", 0.7)
+            .join("rect")
+            .attr("class", "heatmap-cell")
+            .attr("x", d => xScale(d.jurisdiction))
+            .attr("y", d => yScale(d.enforcement))
+            .attr("width", xScale.bandwidth())
+            .attr("height", yScale.bandwidth())
+            .attr("fill", d => colorScale(d.value))
             .attr("stroke", "#fff")
-            .attr("stroke-width", 1.5)
+            .attr("stroke-width", 2)
+            .attr("opacity", 0)
             .style("cursor", "pointer")
-            // Tooltip on hover
+            // Hover interactions
             .on("mouseover", function(event, d) {
-                // Highlight circle
+                // Highlight cell
                 d3.select(this)
                     .transition()
                     .duration(200)
-                    .attr("r", 8)
-                    .attr("opacity", 1)
-                    .attr("stroke-width", 2);
+                    .attr("stroke", "#1f2937")
+                    .attr("stroke-width", 3)
+                    .attr("opacity", 1);
 
                 // Show tooltip
                 tooltip.transition()
@@ -282,63 +273,127 @@
                     .style("opacity", 1);
 
                 tooltip.html(`
-                    <strong>${d.jurisdiction}</strong><br/>
-                    Count: <strong>${d3.format(",")(d.count)}</strong><br/>
-                    ${yLabel}: <strong>${d3.format(",")(d[yField])}</strong>
+                    <strong>${d.jurisdiction} - ${d.enforcement.charAt(0) + d.enforcement.slice(1).toLowerCase()}</strong><br/>
+                    Average Prediction: <strong>${d.value.toFixed(3)}</strong><br/>
+                    Sample Size: <strong>${d3.format(",")(d.count)}</strong> records
                 `)
                     .style("left", (event.pageX + 15) + "px")
                     .style("top", (event.pageY - 28) + "px");
             })
             .on("mouseout", function() {
-                // Reset circle
+                // Reset cell
                 d3.select(this)
                     .transition()
                     .duration(200)
-                    .attr("r", 5)
-                    .attr("opacity", 0.7)
-                    .attr("stroke-width", 1.5);
+                    .attr("stroke", "#fff")
+                    .attr("stroke-width", 2)
+                    .attr("opacity", 0.9);
 
                 // Hide tooltip
                 tooltip.transition()
-                    .duration(500)
+                    .duration(300)
                     .style("opacity", 0);
             })
-            // Animate entrance
+            // Entrance animation
             .transition()
-            .duration(800)
-            .delay((d, i) => i * 2) // Stagger animation
-            .attr("r", 5);
+            .duration(600)
+            .delay((d, i) => i * 30)
+            .attr("opacity", 0.9);
+
+        // Add text labels to cells (show value)
+        g.selectAll(".cell-text")
+            .data(data)
+            .join("text")
+            .attr("class", "cell-text")
+            .attr("x", d => xScale(d.jurisdiction) + xScale.bandwidth() / 2)
+            .attr("y", d => yScale(d.enforcement) + yScale.bandwidth() / 2)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .attr("font-size", "12px")
+            .attr("font-weight", "600")
+            .attr("fill", d => d.value > maxValue * 0.6 ? "#fff" : "#1f2937")
+            .attr("opacity", 0)
+            .text(d => d.value > 0 ? d.value.toFixed(2) : "—")
+            .transition()
+            .duration(600)
+            .delay((d, i) => i * 30 + 300)
+            .attr("opacity", 1);
 
         // ===================================
-        // LEGEND
+        // LEGEND (COLOR SCALE)
         // ===================================
 
-        const legend = g.append("g")
-            .attr("class", "legend")
-            .attr("transform", `translate(${width - 100}, 20)`);
+        const legendWidth = 20;
+        const legendHeight = height;
+        const legendX = width + 30;
 
-        // Create legend items for each jurisdiction
-        const jurisdictions = Array.from(new Set(data.map(d => d.jurisdiction))).sort();
+        // Create gradient for legend
+        const defs = svg.append("defs");
+        const linearGradient = defs.append("linearGradient")
+            .attr("id", "legend-gradient")
+            .attr("x1", "0%")
+            .attr("y1", "100%")
+            .attr("x2", "0%")
+            .attr("y2", "0%");
 
-        const legendItems = legend.selectAll(".legend-item")
-            .data(jurisdictions)
-            .join("g")
-            .attr("class", "legend-item")
-            .attr("transform", (d, i) => `translate(0, ${i * 20})`);
+        // Add color stops
+        const numStops = 10;
+        for (let i = 0; i <= numStops; i++) {
+            const offset = (i / numStops) * 100;
+            const value = minValue + (maxValue - minValue) * (i / numStops);
+            linearGradient.append("stop")
+                .attr("offset", `${offset}%`)
+                .attr("stop-color", colorScale(value));
+        }
 
-        // Legend colored circles
-        legendItems.append("circle")
-            .attr("r", 5)
-            .attr("fill", d => colorScale(d))
-            .attr("opacity", 0.7);
+        // Legend rectangle
+        g.append("rect")
+            .attr("x", legendX)
+            .attr("y", 0)
+            .attr("width", legendWidth)
+            .attr("height", legendHeight)
+            .style("fill", "url(#legend-gradient)")
+            .attr("stroke", "#d1d5db")
+            .attr("stroke-width", 1);
 
-        // Legend text labels
-        legendItems.append("text")
-            .attr("x", 12)
-            .attr("y", 4)
-            .attr("font-size", "11px")
+        // Legend axis
+        const legendScale = d3.scaleLinear()
+            .domain([maxValue, minValue])
+            .range([0, legendHeight]);
+
+        const legendAxis = d3.axisRight(legendScale)
+            .ticks(5)
+            .tickFormat(d => d.toFixed(2));
+
+        g.append("g")
+            .attr("class", "legend-axis")
+            .attr("transform", `translate(${legendX + legendWidth}, 0)`)
+            .call(legendAxis)
+            .selectAll("text")
+            .style("font-size", "11px");
+
+        // Legend title
+        g.append("text")
+            .attr("x", legendX + legendWidth / 2)
+            .attr("y", -20)
+            .attr("text-anchor", "middle")
+            .attr("font-size", "12px")
+            .attr("font-weight", "600")
             .attr("fill", "#374151")
-            .text(d => d);
+            .text("Avg Prediction");
+
+        // ===================================
+        // CHART TITLE
+        // ===================================
+
+        g.append("text")
+            .attr("x", width / 2)
+            .attr("y", -35)
+            .attr("text-anchor", "middle")
+            .attr("font-size", "16px")
+            .attr("font-weight", "700")
+            .attr("fill", "#1f2937")
+            .text("Enforcement Response Intensity by Jurisdiction");
     }
 
 })();
