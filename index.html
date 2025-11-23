@@ -237,33 +237,26 @@
             </div>
         </section>
 
-        <!-- Act 5: Actionable Insights -->
-        <section id="insights" class="section section-white">
+        <!-- Act 5: Drug Type & Jurisdiction Analysis -->
+        <section class="section section-white">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-tag">Act 5</span>
-                    <h3 class="section-title">Actionable Insights</h3>
+                    <span class="section-tag">Act 6</span>
+                    <h3 class="section-title">Drug Type Distribution</h3>
                     <p class="section-description">
-                        Which jurisdictions show the greatest gap between testing effort and road safety outcomes?
+                        Which drugs are most commonly detected, and where?
                     </p>
                 </div>
 
                 <div class="chart-container">
                     <div class="chart-header">
-                        <h4 class="chart-title">Resource Allocation Analysis</h4>
-                        <p class="chart-subtitle">Testing effort vs. safety outcomes by jurisdiction</p>
+                        <h4 class="chart-title">Positive Tests by Drug Type and Jurisdictions</h4>
+                        <p class="chart-subtitle">Sunburst visualization of drug detection patterns</p>
                     </div>
-                    <div id="chart-insights" class="chart-area">
-                        <!-- Chart 5 will be inserted here by D3.js -->
-                        <div class="chart-placeholder">
-                            <div class="placeholder-icon">🎯</div>
-                            <p>Chart 5: Gap Analysis</p>
-                            <small>Scatter Plot with Quadrant Analysis</small>
-                        </div>
-                    </div>
+                    <div id="sunburst" class="chart-area"></div>
                     <div class="chart-footer">
                         <p class="chart-insight">
-                            <strong>Key Insight:</strong> Where should we focus next?
+                            <strong>Key Insight:</strong> NSW containes 4 drug types.
                         </p>
                     </div>
                 </div>
@@ -337,7 +330,10 @@
     </footer>
 
     <!-- Custom JavaScript -->
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/loaddata.js"></script> 
+    <script src="js/sunburst.js"></script>
+
 
 </body>
 </html>
