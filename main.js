@@ -33,24 +33,30 @@ function initNavigation() {
 
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
-
             const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
 
-            if (targetSection) {
-                const navHeight = document.querySelector('.navbar').offsetHeight;
-                const targetPosition = targetSection.offsetTop - navHeight;
+            // Only handle hash links (internal page navigation)
+            // Let external links (like about.html) navigate normally
+            if (targetId.startsWith('#')) {
+                e.preventDefault();
 
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+                const targetSection = document.querySelector(targetId);
 
-                // Update active state
-                navLinks.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
+                if (targetSection) {
+                    const navHeight = document.querySelector('.navbar').offsetHeight;
+                    const targetPosition = targetSection.offsetTop - navHeight;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Update active state
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                }
             }
+            // For non-hash links (about.html), let browser navigate normally
         });
     });
 }
