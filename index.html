@@ -253,55 +253,27 @@
             </div>
         </section>
 
-        <!-- Act 5: Actionable Insights -->
-        <section id="insights" class="section section-white">
+        <!-- Act 5: Drug Type & Jurisdiction Analysis -->
+        <section class="section section-white">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-tag">Act 5</span>
-                    <h3 class="section-title">Actionable Insights</h3>
+                    <span class="section-tag">Act 6</span>
+                    <h3 class="section-title">Drug Type Distribution</h3>
                     <p class="section-description">
-                        Understanding positive test rates and drug detection patterns across Australia
+                        Which drugs are most commonly detected, and where?
                     </p>
                 </div>
 
                 <!-- Chart 5: Highest Positive Drug Tests by Jurisdiction -->
                 <div class="chart-container">
                     <div class="chart-header">
-                        <h4 class="chart-title">Q5: Highest Positive Drug Tests by Jurisdiction</h4>
-                        <p class="chart-subtitle">Which jurisdictions show the highest positive drug test rates?</p>
+                        <h4 class="chart-title">Q5 & Q6 Positive Tests by Drug Type and Jurisdictions</h4>
+                        <p class="chart-subtitle">Sunburst visualization of drug detection patterns</p>
                     </div>
-                    <div id="chart-5-positive-tests" class="chart-area">
-                        <!-- Chart 5 will be inserted here by D3.js -->
-                        <div class="chart-placeholder">
-                            <div class="placeholder-icon">🎯</div>
-                            <p>Chart 5: Positive Test Analysis</p>
-                            <small>Scatter Plot with Quadrant Analysis</small>
-                        </div>
-                    </div>
+                    <div id="sunburst" class="chart-area"></div>
                     <div class="chart-footer">
                         <p class="chart-insight">
-                            <strong>Key Insight:</strong> Where should we focus next?
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Chart 6: Drug Types Detected -->
-                <div class="chart-container" style="margin-top: 2rem;">
-                    <div class="chart-header">
-                        <h4 class="chart-title">Q6: Most Detected Drug Types</h4>
-                        <p class="chart-subtitle">What drug types are most detected across Australia?</p>
-                    </div>
-                    <div id="chart-6-drug-types" class="chart-area">
-                        <!-- Chart 6 will be inserted here by D3.js -->
-                        <div class="chart-placeholder">
-                            <div class="placeholder-icon">💊</div>
-                            <p>Chart 6: Drug Type Distribution</p>
-                            <small>Bar Chart</small>
-                        </div>
-                    </div>
-                    <div class="chart-footer">
-                        <p class="chart-insight">
-                            <strong>Key Insight:</strong> Understanding what drugs we're finding on our roads
+                            <strong>Key Insight:</strong> NSW containes 4 drug types.
                         </p>
                     </div>
                 </div>
@@ -429,12 +401,11 @@
         </div>
     </footer>
 
-    <!-- Custom JavaScript - Load in correct order -->
-    <!-- 1. Data loader must load first -->
-    <script src="loaddata.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/loaddata.js"></script> 
+    <script src="js/sunburst.js"></script>
 
-    <!-- 2. Main navigation and controls -->
-    <script src="main.js"></script>
 
     <!-- 3. Individual chart scripts (add as you create them) -->
     <!-- <script src="chart1-landscape.js"></script> -->
