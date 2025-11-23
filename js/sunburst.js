@@ -8,7 +8,7 @@ const drawSunburst = (data) => {
 
   // Adjust viewBox to accommodate labels (increased height for more vertical space)
   const totalWidth = width + labelAreaWidth * 2;
-  const totalHeight = height + 200;
+  const totalHeight = height + 150;
 
   // Color schemes
   const jurisdictionColors = d3.scaleOrdinal()
