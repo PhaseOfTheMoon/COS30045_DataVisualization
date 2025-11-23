@@ -11,6 +11,9 @@
 
     <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Preload D3 and data loader (scripts will be loaded at end of body) -->
+    <link rel="preload" href="loaddata.js" as="script">
 </head>
 <body>
 
@@ -23,11 +26,18 @@
             </div>
             <ul class="nav-menu">
                 <li><a href="#overview">Overview</a></li>
-                <li><a href="#landscape">Landscape</a></li>
-                <li><a href="#methods">Methods</a></li>
-                <li><a href="#demographics">Demographics</a></li>
-                <li><a href="#disruption">COVID Impact</a></li>
-                <li><a href="#insights">Insights</a></li>
+                <li class="nav-dropdown">
+                    <a href="#" class="dropdown-toggle">Charts ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#landscape">Landscape</a></li>
+                        <li><a href="#methods">Methods</a></li>
+                        <li><a href="#demographics">Demographics</a></li>
+                        <li><a href="#disruption">COVID Impact</a></li>
+                        <li><a href="#insights">Insights</a></li>
+                        <li><a href="#enforcement">Enforcement</a></li>
+                    </ul>
+                </li>
+                <li><a href="#about">About Us</a></li>
             </ul>
         </div>
     </nav>
@@ -43,18 +53,24 @@
             </p>
             <div class="hero-stats">
                 <div class="stat-card">
-                    <div class="stat-number">17</div>
+                    <div class="stat-number" data-count="17" data-suffix="">0</div>
                     <div class="stat-label">Years of Data</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">8</div>
+                    <div class="stat-number" data-count="8" data-suffix="">0</div>
                     <div class="stat-label">Jurisdictions</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">1M+</div>
+                    <div class="stat-number" data-count="1" data-suffix="M+">0</div>
                     <div class="stat-label">Drug Tests</div>
                 </div>
             </div>
+
+            <!-- Explore Button -->
+            <button id="explore-button" class="hero-explore-btn">
+                <span>↓</span>
+                Explore the Data
+            </button>
         </div>
     </header>
 
@@ -244,26 +260,103 @@
                     <span class="section-tag">Act 5</span>
                     <h3 class="section-title">Actionable Insights</h3>
                     <p class="section-description">
-                        Which jurisdictions show the greatest gap between testing effort and road safety outcomes?
+                        Understanding positive test rates and drug detection patterns across Australia
                     </p>
                 </div>
 
+                <!-- Chart 5: Highest Positive Drug Tests by Jurisdiction -->
                 <div class="chart-container">
                     <div class="chart-header">
-                        <h4 class="chart-title">Resource Allocation Analysis</h4>
-                        <p class="chart-subtitle">Testing effort vs. safety outcomes by jurisdiction</p>
+                        <h4 class="chart-title">Q5: Highest Positive Drug Tests by Jurisdiction</h4>
+                        <p class="chart-subtitle">Which jurisdictions show the highest positive drug test rates?</p>
                     </div>
-                    <div id="chart-insights" class="chart-area">
+                    <div id="chart-5-positive-tests" class="chart-area">
                         <!-- Chart 5 will be inserted here by D3.js -->
                         <div class="chart-placeholder">
                             <div class="placeholder-icon">🎯</div>
-                            <p>Chart 5: Gap Analysis</p>
+                            <p>Chart 5: Positive Test Analysis</p>
                             <small>Scatter Plot with Quadrant Analysis</small>
                         </div>
                     </div>
                     <div class="chart-footer">
                         <p class="chart-insight">
                             <strong>Key Insight:</strong> Where should we focus next?
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Chart 6: Drug Types Detected -->
+                <div class="chart-container" style="margin-top: 2rem;">
+                    <div class="chart-header">
+                        <h4 class="chart-title">Q6: Most Detected Drug Types</h4>
+                        <p class="chart-subtitle">What drug types are most detected across Australia?</p>
+                    </div>
+                    <div id="chart-6-drug-types" class="chart-area">
+                        <!-- Chart 6 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">💊</div>
+                            <p>Chart 6: Drug Type Distribution</p>
+                            <small>Bar Chart</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> Understanding what drugs we're finding on our roads
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Act 6: Enforcement Response (Q7 & Q8 - YOUR CHARTS) -->
+        <section id="enforcement" class="section section-light">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Act 6</span>
+                    <h3 class="section-title">Enforcement Response</h3>
+                    <p class="section-description">
+                        How do authorities respond to positive drug tests, and does severity vary by jurisdiction?
+                    </p>
+                </div>
+
+                <!-- Chart 7: Enforcement Response Heatmap -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h4 class="chart-title">Q7: Enforcement Response Correlation</h4>
+                        <p class="chart-subtitle">Intensity heatmap showing relationship between enforcement types and jurisdictions</p>
+                    </div>
+                    <div id="chart-7-correlation" class="chart-area">
+                        <!-- Chart 7 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">📊</div>
+                            <p>Chart 7: Enforcement Response Heatmap</p>
+                            <small>3×8 Heatmap (Enforcement Types × Jurisdictions)</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> Darker colors indicate higher predicted positive test rates for that enforcement type and jurisdiction combination
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Chart 8: Enforcement Severity by Jurisdiction -->
+                <div class="chart-container" style="margin-top: 2rem;">
+                    <div class="chart-header">
+                        <h4 class="chart-title">Q8: Enforcement Severity by Jurisdiction</h4>
+                        <p class="chart-subtitle">Total fines, arrests, and charges across Australian states</p>
+                    </div>
+                    <div id="chart-8-severity" class="chart-area">
+                        <!-- Chart 8 will be inserted here by D3.js -->
+                        <div class="chart-placeholder">
+                            <div class="placeholder-icon">⚖️</div>
+                            <p>Chart 8: Enforcement Severity Comparison</p>
+                            <small>Grouped/Stacked Bar Chart</small>
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <p class="chart-insight">
+                            <strong>Key Insight:</strong> Which jurisdictions are toughest on drug driving?
                         </p>
                     </div>
                 </div>
@@ -294,6 +387,64 @@
                         <div class="takeaway-icon">💡</div>
                         <h4>Future Focus</h4>
                         <p>Data suggests [jurisdictions] could benefit from increased testing resources.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="section section-white">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">About Us</span>
+                    <h3 class="section-title">Meet The Team</h3>
+                    <p class="section-description">
+                        We are a dedicated team of students from Swinburne University of Technology,
+                        working together on this data visualization project for COS30045. Our goal is to
+                        transform complex drug testing enforcement data into meaningful insights that can
+                        inform policy decisions and improve road safety across Australia.
+                    </p>
+                </div>
+
+                <!-- Team Members Grid -->
+                <div class="team-grid">
+                    <!-- Team Member 1: Wei Chien CHIN (Leader) -->
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <img src="./images/placeholder-avatar.svg" alt="Wei Chien CHIN" />
+                        </div>
+                        <div class="team-info">
+                            <h4 class="team-name">Wei Chien CHIN</h4>
+                            <p class="team-role">Team Leader</p>
+                            <p class="team-id">Student ID: [TBD]</p>
+                            <p class="team-major">[Major TBD]</p>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 2: Jun Zhen WONG -->
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <img src="./images/JunZhen.jpg" alt="Jun Zhen WONG" />
+                        </div>
+                        <div class="team-info">
+                            <h4 class="team-name">Jun Zhen WONG</h4>
+                            <p class="team-role">Developer</p>
+                            <p class="team-id">Student ID: 104385730</p>
+                            <p class="team-major">Bachelor of Computer Science<br/>Major: Cybersecurity</p>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 3: Aaric Ching Chian LEE -->
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <img src="./images/placeholder-avatar.svg" alt="Aaric Ching Chian LEE" />
+                        </div>
+                        <div class="team-info">
+                            <h4 class="team-name">Aaric Ching Chian LEE</h4>
+                            <p class="team-role">Developer</p>
+                            <p class="team-id">Student ID: [TBD]</p>
+                            <p class="team-major">[Major TBD]</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -336,8 +487,22 @@
         </div>
     </footer>
 
-    <!-- Custom JavaScript -->
+    <!-- Custom JavaScript - Load in correct order -->
+    <!-- 1. Data loader must load first -->
+    <script src="loaddata.js"></script>
+
+    <!-- 2. Main navigation and controls -->
     <script src="main.js"></script>
+
+    <!-- 3. Individual chart scripts (add as you create them) -->
+    <!-- <script src="chart1-landscape.js"></script> -->
+    <!-- <script src="chart2-methods.js"></script> -->
+    <!-- <script src="chart3-demographics.js"></script> -->
+    <!-- <script src="chart4-covid.js"></script> -->
+    <!-- <script src="chart5-positive-tests.js"></script> -->
+    <!-- <script src="chart6-drug-types.js"></script> -->
+    <script src="chart7-correlation.js"></script>
+    <script src="chart8-severity.js"></script>
 
 </body>
 </html>
