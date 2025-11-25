@@ -1,51 +1,80 @@
-// loaddata.js - Data loading and processing
+// js/loaddata.js
+// ===================================
+// CENTRAL DATA LOADING MODULE
+// ===================================
 
-/**
- * Get color scheme for detection methods
- */
-function getDetectionMethodColors() {
-  return {
-    'Oral Fluid': '#3b82f6',
-    'Blood Test': '#ef4444',
-    'Urine Test': '#10b981'
+(function () {
+  console.log('Data loader script loaded');
+
+  /**
+   * Optional helper: color scheme for detection methods
+   * (global so other scripts can use it)
+   */
+  window.getDetectionMethodColors = function () {
+    return {
+      'Oral Fluid': '#3b82f6',
+      'Blood Test': '#ef4444',
+      'Urine Test': '#10b981'
+    };
   };
-}
 
-// Load all datasets
-Promise.all([
-  // Dataset 1: Sunburst chart data (existing)
-  d3.csv("data/PTestByDrugTJurisdic.csv", d => ({
-    drugType: d.ColumnNames,
-    jurisdiction: d.JURISDICTION,
-    detectionMethod: d.BEST_DETECTION_METHOD === 'Yes' ? 'Detected' : d.BEST_DETECTION_METHOD,
-    count: +d['Sum(COUNT)']
-  })),
+  /**
+   * Attach a single shared loader object to window so
+   * main.js can call: await dataLoader.loadDrugTests()
+   */
+  window.dataLoader = {
+    /**
+     * Load full drug-testing dataset
+     * @returns {Promise<Array<Object>>}
+     */
+    async loadDrugTests() {
+      try {
+        const data = await d3.csv(
+          './data/police_enforcement_2024_positive_drug_tests.csv',
+          d3.autoType
+        );
 
-  // Dataset 2: Chart 7 - Enforcement correlation data
-  d3.csv("data/FinArrChrByPositiveTest.csv", d3.autoType),
+        console.log('Drug test data loaded:', data.length, 'records');
+        if (data.length > 0) {
+          console.log('Sample record:', data[0]);
+        }
 
-  // Dataset 3: Chart 8 - Enforcement severity data
-  d3.csv("data/FinArrChrByJurisdiction.csv", d3.autoType)
-])
-.then(([sunburstData, chart7Data, chart8Data]) => {
-  console.log('Combined data loaded:', sunburstData);
-  console.log('Chart 7 data loaded:', chart7Data.length, 'records');
-  console.log('Chart 8 data loaded:', chart8Data.length, 'records');
+        return data;
+      } catch (error) {
+        console.error('Error loading drug test data:', error);
+        throw error;
+      }
+    },
 
-  // Call drawing functions with their respective data
-  drawSunburst(sunburstData);  // Sunburst diagram (existing teammate's chart)
+    /**
+     * Filter by year range (inclusive)
+     */
+    async loadDrugTestsByYear(startYear, endYear) {
+      const data = await this.loadDrugTests();
+      return data.filter(d => d.YEAR >= startYear && d.YEAR <= endYear);
+    },
 
-  // Initialize Chart 7 and Chart 8 (if functions exist)
-  if (typeof drawChart7Heatmap === 'function') {
-    drawChart7Heatmap(chart7Data);
-  }
-  if (typeof drawChart8Severity === 'function') {
-    drawChart8Severity(chart8Data);
-  }
+    /**
+     * Filter by jurisdiction
+     */
+    async loadDrugTestsByJurisdiction(jurisdiction) {
+      const data = await this.loadDrugTests();
+      return data.filter(d => d.JURISDICTION === jurisdiction);
+    },
 
-  // Add any other initialization functions here
-  // createTooltip();
-})
-.catch(error => {
-  console.error("Error loading CSV file:", error);
-});
+    /**
+     * Filter by jurisdiction + year range
+     */
+    async loadFilteredData(jurisdiction, startYear, endYear) {
+      const data = await this.loadDrugTests();
+      return data.filter(d => {
+        const yearMatch = d.YEAR >= startYear && d.YEAR <= endYear;
+        const jurisdictionMatch =
+          jurisdiction === 'all' || d.JURISDICTION === jurisdiction;
+        return yearMatch && jurisdictionMatch;
+      });
+    }
+  };
+
+  console.log('Data loader initialized');
+})();
