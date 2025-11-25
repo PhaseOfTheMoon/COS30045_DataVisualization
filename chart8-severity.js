@@ -4,7 +4,14 @@
 // Research Question 8: Total number of fines, arrests, and charges by jurisdiction
 // ===================================
 
-(function() {
+/**
+ * Main function to initialize Chart 8
+ * Called from loaddata.js with pre-loaded data
+ */
+function drawChart8Severity(data) {
+    console.log('Chart 8: Initializing with', data.length, 'records');
+    console.log('Chart 8: Sample data:', data[0]);
+
     // ===================================
     // CHART CONFIGURATION
     // ===================================
@@ -59,42 +66,28 @@
         .range(Object.values(jurisdictionColors));
 
     // ===================================
-    // DATA LOADING AND PROCESSING
+    // DATA PROCESSING
     // ===================================
 
-    // Load pre-processed CSV file (already aggregated by teammate)
-    d3.csv("./data/FinArrChrByJurisdiction.csv", d3.autoType).then(data => {
-        console.log('Chart 8: Data loaded', data.length, 'records');
-        console.log('Chart 8: Sample data:', data[0]);
+    // Data is in "long" format, need to convert to "wide" format
+    // Group by jurisdiction and pivot metrics
+    const grouped = d3.group(data, d => d.JURISDICTION);
 
-        // Data is in "long" format, need to convert to "wide" format
-        // Group by jurisdiction and pivot metrics
-        const grouped = d3.group(data, d => d.JURISDICTION);
-
-        const processedData = Array.from(grouped, ([jurisdiction, rows]) => {
-            const result = { jurisdiction: jurisdiction };
-            rows.forEach(row => {
-                // Map column names to simpler keys
-                if (row.ColumnNames === "Sum(ARRESTS)") result.arrests = row.ColumnValues;
-                if (row.ColumnNames === "Sum(FINES)") result.fines = row.ColumnValues;
-                if (row.ColumnNames === "Sum(CHARGES)") result.charges = row.ColumnValues;
-            });
-            return result;
+    const processedData = Array.from(grouped, ([jurisdiction, rows]) => {
+        const result = { jurisdiction: jurisdiction };
+        rows.forEach(row => {
+            // Map column names to simpler keys
+            if (row.ColumnNames === "Sum(ARRESTS)") result.arrests = row.ColumnValues;
+            if (row.ColumnNames === "Sum(FINES)") result.fines = row.ColumnValues;
+            if (row.ColumnNames === "Sum(CHARGES)") result.charges = row.ColumnValues;
         });
-
-        console.log('Chart 8: Processed data:', processedData);
-
-        // Draw chart
-        drawChart(processedData);
-
-    }).catch(error => {
-        console.error('Chart 8: Error loading data:', error);
-        container.append("p")
-            .style("color", "red")
-            .style("text-align", "center")
-            .style("padding", "20px")
-            .text("Error loading data. Please check the console.");
+        return result;
     });
+
+    console.log('Chart 8: Processed data:', processedData);
+
+    // Draw chart
+    drawChart(processedData);
 
     // ===================================
     // CHART DRAWING FUNCTION
@@ -294,5 +287,4 @@
             .attr("fill", "#374151")
             .text(d => d);
     }
-
-})();
+}

@@ -4,7 +4,14 @@
 // Research Question 7: How do fines, arrests, and charges correlate with number of positive tests?
 // ===================================
 
-(function() {
+/**
+ * Main function to initialize Chart 7
+ * Called from loaddata.js with pre-loaded data
+ */
+function drawChart7Heatmap(rawData) {
+    console.log('Chart 7: Initializing with', rawData.length, 'records');
+    console.log('Chart 7: Sample data:', rawData.slice(0, 3));
+
     // ===================================
     // CHART CONFIGURATION
     // ===================================
@@ -48,32 +55,17 @@
         .style("z-index", 10000);
 
     // ===================================
-    // DATA LOADING AND PROCESSING
+    // DATA PROCESSING
     // ===================================
 
-    // Load pre-processed CSV file
-    d3.csv("./data/FinArrChrByPositiveTest.csv", d3.autoType).then(rawData => {
-        console.log('Chart 7: Data loaded', rawData.length, 'records');
-        console.log('Chart 7: Sample data:', rawData.slice(0, 3));
+    // Process data for heatmap
+    // Aggregate by jurisdiction and enforcement type to get average positive test prediction
+    const processedData = processDataForHeatmap(rawData);
 
-        // Process data for heatmap
-        // Aggregate by jurisdiction and enforcement type to get average positive test prediction
-        const processedData = processDataForHeatmap(rawData);
+    console.log('Chart 7: Processed heatmap data:', processedData);
 
-        console.log('Chart 7: Processed heatmap data:', processedData);
-
-        // Draw heatmap
-        drawHeatmap(processedData);
-
-    }).catch(error => {
-        console.error('Chart 7: Error loading data:', error);
-        container.append("p")
-            .style("color", "#ef4444")
-            .style("text-align", "center")
-            .style("padding", "20px")
-            .style("font-weight", "600")
-            .text("Error loading data. Please check the console.");
-    });
+    // Draw heatmap
+    drawHeatmap(processedData);
 
     // ===================================
     // DATA PROCESSING FUNCTION
@@ -395,5 +387,4 @@
             .attr("fill", "#1f2937")
             .text("Enforcement Response Intensity by Jurisdiction");
     }
-
-})();
+}
