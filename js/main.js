@@ -38,9 +38,7 @@ function initNavigation() {
     const navLinks = document.querySelectorAll('.nav-menu a');
 
     navLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-
+        link.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
 
             // Only handle hash links (internal page navigation)
