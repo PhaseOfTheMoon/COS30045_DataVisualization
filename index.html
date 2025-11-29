@@ -90,35 +90,7 @@
                         authorities are tackling this challenge.
                     </p>
                 </div>
-
-                <!-- Filter Controls -->
-                <div class="controls-panel">
-                    <div class="control-group">
-                        <label for="jurisdiction-filter">Jurisdiction</label>
-                        <select id="jurisdiction-filter" class="control-select">
-                            <option value="all">All Jurisdictions</option>
-                            <option value="NSW">New South Wales</option>
-                            <option value="VIC">Victoria</option>
-                            <option value="QLD">Queensland</option>
-                            <option value="SA">South Australia</option>
-                            <option value="WA">Western Australia</option>
-                            <option value="TAS">Tasmania</option>
-                            <option value="NT">Northern Territory</option>
-                            <option value="ACT">Australian Capital Territory</option>
-                        </select>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="year-range">Year Range</label>
-                        <div class="range-container">
-                            <input type="range" id="year-range" class="control-range"
-                                   min="2008" max="2024" value="2024">
-                            <span id="year-display" class="range-value">2024</span>
-                        </div>
-                    </div>
-
-                    <button id="reset-filters" class="btn-secondary">Reset Filters</button>
-                </div>
+                <!-- Filters removed from here and moved to Chart 1 -->
             </div>
         </section>
 
@@ -137,7 +109,43 @@
                     <div class="chart-header">
                         <h4 class="chart-title">Drug Testing Intensity Over Time</h4>
                         <p class="chart-subtitle">Tests per 100,000 population by jurisdiction</p>
+
+                        <!-- Full filter panel now attached to Chart 1 -->
+                        <div class="controls-panel chart-controls-inline">
+                            <div class="control-group">
+                                <label for="jurisdiction-filter">Jurisdiction</label>
+                                <select id="jurisdiction-filter" class="control-select">
+                                    <option value="all">All Jurisdictions</option>
+                                    <option value="NSW">New South Wales</option>
+                                    <option value="VIC">Victoria</option>
+                                    <option value="QLD">Queensland</option>
+                                    <option value="SA">South Australia</option>
+                                    <option value="WA">Western Australia</option>
+                                    <option value="TAS">Tasmania</option>
+                                    <option value="NT">Northern Territory</option>
+                                    <option value="ACT">Australian Capital Territory</option>
+                                </select>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="year-range">Year Range</label>
+                                <div class="range-container">
+                                    <input
+                                        type="range"
+                                        id="year-range"
+                                        class="control-range"
+                                        min="2008"
+                                        max="2024"
+                                        value="2024"
+                                    >
+                                    <span id="year-display" class="range-value">2024</span>
+                                </div>
+                            </div>
+
+                            <button id="reset-filters" class="btn-secondary">Reset Filters</button>
+                        </div>
                     </div>
+
                     <div id="chart-landscape" class="chart-area">
                         <!-- Chart 1 will be inserted here by D3.js -->
                         <div class="chart-placeholder">
@@ -236,6 +244,7 @@
                     <div class="chart-header">
                         <h4 class="chart-title">COVID-19 Impact Analysis</h4>
                         <p class="chart-subtitle">Before, during, and after the pandemic (2018-2024)</p>
+                        <p class="chart-subtitle">Click on the jurisdictions in the legend to filter the data.</p>
                     </div>
                     <div id="chart-covid" class="chart-area">
                         <!-- Chart 4 will be inserted here by D3.js -->
@@ -412,10 +421,10 @@
     <script src="js/sunburst.js"></script>
     <script src="js/chart7-correlation.js"></script>
     <script src="js/chart8-severity.js"></script>
-    <!-- <script src="js/chart1-landscape.js"></script> -->
-    <!-- <script src="js/chart2-methods.js"></script> -->
-    <!-- <script src="js/chart3-demographics.js"></script> -->
-    <!-- <script src="js/chart4-covid.js"></script> -->
+    <script src="js/chart1.js"></script>
+    <script src="js/chart2.js"></script>
+    <script src="js/chart3.js"></script>
+    <script src="js/chart4.js"></script>
 
     <!-- 3. Data loader MUST load LAST (after all chart functions are defined) -->
     <script src="js/loaddata.js"></script>
