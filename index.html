@@ -30,12 +30,12 @@
                 <li class="nav-dropdown">
                     <a href="#" class="dropdown-toggle">Charts ▾</a>
                     <ul class="dropdown-menu">
-                        <li><a href="#landscape">Landscape</a></li>
-                        <li><a href="#methods">Methods</a></li>
-                        <li><a href="#demographics">Demographics</a></li>
-                        <li><a href="#disruption">COVID Impact</a></li>
-                        <li><a href="#insights">Insights</a></li>
-                        <li><a href="#enforcement">Enforcement</a></li>
+                        <li><a href="#chart1">Chart 1</a></li>
+                        <li><a href="#chart2">Chart 2</a></li>
+                        <li><a href="#chart3">Chart 3</a></li>
+                        <li><a href="#chart4">Chart 4</a></li>
+                        <li><a href="#chart5n6">Chart 5</a></li>
+                        <li><a href="#chart7n8">Chart 6&7</a></li>
                     </ul>
                 </li>
                 <li><a href="about.html">About Us</a></li>
@@ -77,7 +77,6 @@
 
     <!-- Main Content -->
     <main>
-
         <!-- Overview Section -->
         <section id="overview" class="section section-light">
             <div class="container">
@@ -90,12 +89,11 @@
                         authorities are tackling this challenge.
                     </p>
                 </div>
-                <!-- Filters removed from here and moved to Chart 1 -->
             </div>
         </section>
 
         <!-- Act 1: The Landscape -->
-        <section id="landscape" class="section section-white">
+        <section id="chart1" class="section section-white">
             <div class="container">
                 <div class="section-header">
                     <span class="section-tag">Act 1</span>
@@ -107,10 +105,17 @@
 
                 <div class="chart-container">
                     <div class="chart-header">
-                        <h4 class="chart-title">Drug Testing Intensity Over Time</h4>
-                        <p class="chart-subtitle">Tests per 100,000 population by jurisdiction</p>
+                        <h4 class="chart-title">Q1: Drug Testing Intensity Over Time</h4>
+                        <p class="chart-subtitle">
+                            Tests per 100,000 population by jurisdiction
+                        </p>
+                        <p style="font-size: 14px; margin: 1px;">
+                            <b>Hint:</b> 
+                            <i>You may select the jurisdiction,scroll the time line,click the line in chart.</i>
+                            <br>
+                            <i style="font-size: 12px;"><b>Tips:</b> The "Reset Filters" button will reset all used filters.</i>
+                        </p>
 
-                        <!-- Full filter panel now attached to Chart 1 -->
                         <div class="controls-panel chart-controls-inline">
                             <div class="control-group">
                                 <label for="jurisdiction-filter">Jurisdiction</label>
@@ -147,12 +152,7 @@
                     </div>
 
                     <div id="chart-landscape" class="chart-area">
-                        <!-- Chart 1 will be inserted here by D3.js -->
-                        <div class="chart-placeholder">
-                            <div class="placeholder-icon">📊</div>
-                            <p>Chart 1: Testing Intensity Evolution</p>
-                            <small>Choropleth Map + Line Chart</small>
-                        </div>
+                        <div class="chart-placeholder"></div>
                     </div>
                     <div class="chart-footer">
                         <p class="chart-insight">
@@ -164,7 +164,7 @@
         </section>
 
         <!-- Act 2: The Methods -->
-        <section id="methods" class="section section-light">
+        <section id="chart2" class="section section-light">
             <div class="container">
                 <div class="section-header">
                     <span class="section-tag">Act 2</span>
@@ -176,16 +176,20 @@
 
                 <div class="chart-container">
                     <div class="chart-header">
-                        <h4 class="chart-title">Detection Methods & Effectiveness</h4>
-                        <p class="chart-subtitle">Method mix and positive detection rates</p>
+                        <h4 class="chart-title">Q2: Detection Methods & Effectiveness</h4>
+                        <p class="chart-subtitle">
+                            Method mix and positive detection rates
+                        </p>
+
+                        <p style="font-size: 14px; margin: 1px;">
+                            <b>Hint:</b> 
+                            <i>Try to click on the label.</i>
+                            <br>
+                            <i style="font-size: 12px;"><b>Tips:</b> Click the same label again to remove animation.</i>
+                        </p>
                     </div>
                     <div id="chart-methods" class="chart-area">
-                        <!-- Chart 2 will be inserted here by D3.js -->
-                        <div class="chart-placeholder">
-                            <div class="placeholder-icon">📈</div>
-                            <p>Chart 2: Detection Method Analysis</p>
-                            <small>Stacked Area Chart + Comparison</small>
-                        </div>
+                        <div class="chart-placeholder"></div>
                     </div>
                     <div class="chart-footer">
                         <p class="chart-insight">
@@ -197,7 +201,7 @@
         </section>
 
         <!-- Act 3: The Demographics -->
-        <section id="demographics" class="section section-white">
+        <section id="chart3" class="section section-white">
             <div class="container">
                 <div class="section-header">
                     <span class="section-tag">Act 3</span>
@@ -209,16 +213,15 @@
 
                 <div class="chart-container">
                     <div class="chart-header">
-                        <h4 class="chart-title">Testing by Age Group</h4>
+                        <h4 class="chart-title">Q3: Testing by Age Group</h4>
                         <p class="chart-subtitle">Test volumes and detection rates across demographics</p>
+                        <p style="font-size: 14px; margin: 1px;">
+                            <b>Hint:</b> 
+                            <i>What will happen if put the mouse on the bar chart, can click?</i>
+                        </p>
                     </div>
                     <div id="chart-demographics" class="chart-area">
-                        <!-- Chart 3 will be inserted here by D3.js -->
-                        <div class="chart-placeholder">
-                            <div class="placeholder-icon">👥</div>
-                            <p>Chart 3: Age Group Analysis</p>
-                            <small>Population Pyramid / Distribution</small>
-                        </div>
+                        <div class="chart-placeholder"></div>
                     </div>
                     <div class="chart-footer">
                         <p class="chart-insight">
@@ -230,7 +233,7 @@
         </section>
 
         <!-- Act 4: The Disruption -->
-        <section id="disruption" class="section section-light">
+        <section id="chart4" class="section section-light">
             <div class="container">
                 <div class="section-header">
                     <span class="section-tag">Act 4</span>
@@ -242,17 +245,17 @@
 
                 <div class="chart-container">
                     <div class="chart-header">
-                        <h4 class="chart-title">COVID-19 Impact Analysis</h4>
+                        <h4 class="chart-title">Q4: COVID-19 Impact Analysis</h4>
                         <p class="chart-subtitle">Before, during, and after the pandemic (2018-2024)</p>
-                        <p class="chart-subtitle">Click on the jurisdictions in the legend to filter the data.</p>
+                        <p style="font-size: 14px; margin: 1px;">
+                            <b>Hint:</b> 
+                            <i>Try to click on the label, can click multiple?</i>
+                            <br>
+                            <i style="font-size: 12px;"><b>Tips:</b> Click the same label again to remove animation.</i>
+                        </p>
                     </div>
                     <div id="chart-covid" class="chart-area">
-                        <!-- Chart 4 will be inserted here by D3.js -->
-                        <div class="chart-placeholder">
-                            <div class="placeholder-icon">🦠</div>
-                            <p>Chart 4: COVID Impact Comparison</p>
-                            <small>Before/During/After Analysis</small>
-                        </div>
+                        <div class="chart-placeholder"></div>
                     </div>
                     <div class="chart-footer">
                         <p class="chart-insight">
@@ -264,7 +267,7 @@
         </section>
 
         <!-- Act 5: Drug Type & Jurisdiction Analysis -->
-        <section id="insights" class="section section-white">
+        <section id="chart5n6" class="section section-white">
             <div class="container">
                 <div class="section-header">
                     <span class="section-tag">Act 5</span>
@@ -277,8 +280,14 @@
                 <!-- Chart 5: Highest Positive Drug Tests by Jurisdiction -->
                 <div class="chart-container">
                     <div class="chart-header">
-                        <h4 class="chart-title">Q5 & Q6 Positive Tests by Drug Type and Jurisdictions</h4>
+                        <h4 class="chart-title">Q5 & Q6: Positive Tests by Drug Type and Jurisdictions</h4>
                         <p class="chart-subtitle">Sunburst visualization of drug detection patterns</p>
+                        <p style="font-size: 14px; margin: 1px;">
+                            <b>Hint:</b> 
+                            <i>What will happen if click on the segment and the line?</i>
+                            <br>
+                            <i style="font-size: 12px;"><b>Tips:</b> Click outside the chart to will reset the filters.</i>
+                        </p>
                     </div>
                     <div id="sunburst" class="chart-area"></div>
                     <div class="chart-footer">
@@ -290,8 +299,8 @@
             </div>
         </section>
 
-        <!-- Act 6: Enforcement Response (Q7 & Q8 - YOUR CHARTS) -->
-        <section id="enforcement" class="section section-light">
+        <!-- Act 6: Enforcement Response -->
+        <section id="chart7n8" class="section section-light">
             <div class="container">
                 <div class="section-header">
                     <span class="section-tag">Act 6</span>
@@ -306,14 +315,13 @@
                     <div class="chart-header">
                         <h4 class="chart-title">Q7: Enforcement Response Correlation</h4>
                         <p class="chart-subtitle">Intensity heatmap showing relationship between enforcement types and jurisdictions</p>
+                        <p style="font-size: 14px; margin: 1px;">
+                            <b>Hint:</b> 
+                            <i>What happen put the mouse on the block?</i>
+                        </p>
                     </div>
                     <div id="chart-7-correlation" class="chart-area">
-                        <!-- Chart 7 will be inserted here by D3.js -->
-                        <div class="chart-placeholder">
-                            <div class="placeholder-icon">📊</div>
-                            <p>Chart 7: Enforcement Response Heatmap</p>
-                            <small>3×8 Heatmap (Enforcement Types × Jurisdictions)</small>
-                        </div>
+                        <div class="chart-placeholder"></div>
                     </div>
                     <div class="chart-footer">
                         <p class="chart-insight">
@@ -327,14 +335,13 @@
                     <div class="chart-header">
                         <h4 class="chart-title">Q8: Enforcement Severity by Jurisdiction</h4>
                         <p class="chart-subtitle">Total fines, arrests, and charges across Australian states</p>
+                        <p style="font-size: 14px; margin: 1px;">
+                            <b>Hint:</b> 
+                            <i>What happen put the mouse on the block?</i>
+                        </p>
                     </div>
                     <div id="chart-8-severity" class="chart-area">
-                        <!-- Chart 8 will be inserted here by D3.js -->
-                        <div class="chart-placeholder">
-                            <div class="placeholder-icon">⚖️</div>
-                            <p>Chart 8: Enforcement Severity Comparison</p>
-                            <small>Grouped/Stacked Bar Chart</small>
-                        </div>
+                        <div class="chart-placeholder"></div>
                     </div>
                     <div class="chart-footer">
                         <p class="chart-insight">
