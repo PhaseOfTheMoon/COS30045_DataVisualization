@@ -1,7 +1,4 @@
-// ===================================
 // CHART 1 - multi series line chart
-// interactive + tooltips + multi-select legend FILTER
-// ===================================
 
 (function () {
     const {
@@ -28,7 +25,7 @@
         const g = svg.append('g')
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        // Tooltip div (one per page)
+        // Tooltip div for each page
         let tooltip = d3.select('body').select('.chart-tooltip-landscape');
         if (tooltip.empty()) {
             tooltip = d3.select('body')
@@ -158,7 +155,7 @@
             xAxisGroup.transition().duration(600).call(xAxis);
             yAxisGroup.transition().duration(600).call(yAxis);
 
-            // ----- LINES (only visibleSeries) -----
+            // LINES (only visibleSeries) 
             const lines = linesGroup.selectAll('.line-series')
                 .data(visibleSeries, d => d.jurisdiction);
 
@@ -183,7 +180,7 @@
                 .attr('stroke-opacity', 0)
                 .remove();
 
-            // ----- POINT MARKERS (only visibleSeries) -----
+            // POINT MARKERS (only visibleSeries)
             const flattenedPoints = visibleSeries.flatMap(s =>
                 s.values.map(v => ({
                     YEAR: v.YEAR,
@@ -244,7 +241,7 @@
                 .attr('opacity', 0)
                 .remove();
 
-            // ----- LEGEND (always show ALL jurisdictions that pass top filter) -----
+            // LEGEND to always show ALL jurisdictions that pass top filter
             const legend = legendGroup.selectAll('.legend-item')
                 .data(seriesAll, d => d.jurisdiction);
 
@@ -263,7 +260,7 @@
                     clearHoverHighlight();
                 })
                 .on('click', (event, d) => {
-                    // toggle selection
+                    // toggle the selection
                     if (selectedSet.has(d.jurisdiction)) {
                         selectedSet.delete(d.jurisdiction);
                     } else {
@@ -300,7 +297,7 @@
                 .style('opacity', 0)
                 .remove();
 
-            // style legend text/swatches based on selection
+            // style legend text or swatches based on selection
             legendGroup.selectAll('.legend-item').each(function (d) {
                 const isSelected = selectedSet.size === 0 || selectedSet.has(d.jurisdiction);
                 d3.select(this).select('text')

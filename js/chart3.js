@@ -1,10 +1,6 @@
-// ===================================
 // CHART 3 - bar chart Detection rate by age group
-// interactive + tooltips
-// ===================================
 
 (function () {
-    // We do not strictly need dashboardUtils here, but keep hook for consistency
     window.initChart3 = function initChart3() {
         console.log('Initializing Chart 3: Demographics by age group');
 
@@ -59,7 +55,7 @@
             'All ages': '#16a34a'
         };
 
-        // Re-use tooltip from other charts if present; otherwise create it
+        // Re-use tooltip from chart 1
         let tooltip = d3.select('body').select('.chart-tooltip-landscape');
         if (tooltip.empty()) {
             tooltip = d3.select('body')
@@ -191,7 +187,7 @@
             // Expose a stub update so the filters can call it
             demographicsChart = {
                 update: () => {
-                    // Currently national-level - filters do not change this chart
+                    // Currently national-level, the filters do not change this chart
                     render();
                 }
             };

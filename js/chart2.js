@@ -1,7 +1,4 @@
-// ===================================
 // CHART 2 - Overlapping Area Chart by Detection Method
-// Stage 1 vs Stage 3 (Entries/Exits style)
-// ===================================
 
 (function () {
     const {
@@ -28,7 +25,7 @@
         const g = svg.append("g")
             .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-        // Tooltip (shared with chart 1 if already created)
+        // Tooltip shared with chart 1 
         let tooltip = d3.select("body").select(".chart-tooltip-landscape");
         if (tooltip.empty()) {
             tooltip = d3.select("body")
@@ -45,7 +42,7 @@
                 .style("opacity", 0);
         }
 
-        // --- Data prep: only positive_drug_tests + two methods ---
+        // Data preparation
         const filteredBase = rawData.filter(d =>
             d.YEAR != null &&
             d.DETECTION_METHOD &&
@@ -118,7 +115,7 @@
 
         // Aggregate data by year for selected jurisdiction and year
         function aggregateData(jurisdiction, year) {
-            const maxYearShown = +year;  // <-- no more clamping to data max
+            const maxYearShown = +year;  
             const rows = [];
 
             for (let yVal = minYear; yVal <= maxYearShown; yVal++) {
@@ -149,7 +146,7 @@
             return rows;
         }
 
-        // Area + line generators
+        // Create Area & line 
         const areaStage1 = d3.area()
             .curve(d3.curveMonotoneX)
             .x(d => x(d.YEAR))
@@ -194,7 +191,7 @@
             xAxisGroup.transition().duration(600).call(xAxis);
             yAxisGroup.transition().duration(600).call(yAxis);
 
-            // --- Areas ---
+            // Areas 
             const area1 = areasGroup.selectAll(".area-stage1")
                 .data(activeStages.has("stage1") ? [dataWide] : []);
 
@@ -235,7 +232,7 @@
                 .style("opacity", 0)
                 .remove();
 
-            // --- Lines ---
+            // Lines 
             const line1 = linesGroup.selectAll(".line-stage1")
                 .data(activeStages.has("stage1") ? [dataWide] : []);
 
@@ -276,7 +273,7 @@
                 .style("opacity", 0)
                 .remove();
 
-            // --- Points & tooltip ---
+            // Points & tooltip 
             const flattenedPoints = [];
             if (activeStages.has("stage1")) {
                 dataWide.forEach(row => {

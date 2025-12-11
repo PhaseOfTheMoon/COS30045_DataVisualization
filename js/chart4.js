@@ -1,6 +1,4 @@
-// ===================================
 // CHART 4 - Stacked Treemap with Legend Filtering (Inline Values + Better Labels)
-// ===================================
 
 (function () {
     const {
@@ -115,7 +113,7 @@
 
             updateLegendStyles();
 
-            // ---------- Draw a single treemap block ----------
+            // Tree Map 
             function drawTreemapBlock(yOffset, title, values) {
                 const block = g.append("g")
                     .attr("class", "treemap-block")
@@ -168,7 +166,6 @@
                     .attr("stroke", "#ffffff")
                     .attr("stroke-width", 1);
 
-                // ---------- Prettier labels with auto-fit ----------
                 nodes.each(function (d) {
                     const group = d3.select(this);
                     const w = d.x1 - d.x0;
@@ -178,7 +175,7 @@
                     const valueLabel = formatNumber(d.data.value);
                     const fontFamily = "Inter, Segoe UI, system-ui, sans-serif";
 
-                    // Very small boxes (ACT, NT) – tighter, smaller text but always visible
+                    // Makes small boxes (ACT, NT) more readable
                     if (w < 55 || h < 40) {
                         group.append("text")
                             .attr("x", 4)
@@ -202,7 +199,6 @@
                         return;
                     }
 
-                    // Normal-sized boxes – nicer typography
                     group.append("text")
                         .attr("x", 8)
                         .attr("y", 18)
@@ -224,16 +220,15 @@
                         .text(valueLabel);
                 });
 
-                // Static chart: no hover or tooltip handlers
             }
 
-            // ---------- Render all three treemaps ----------
+            // Render all three treemaps
             function render(jurisdictionFilter = "all") {
                 currentFilterJurisdiction = jurisdictionFilter;
 
                 g.selectAll(".treemap-block").remove();
 
-                let offset = 40; // start a bit below legend
+                let offset = 40; 
 
                 const hasSelection = selectedJurisdictions.size > 0;
 

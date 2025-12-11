@@ -1,15 +1,8 @@
-// js/loaddata.js
-// ===================================
 // CENTRAL DATA LOADING MODULE
-// ===================================
 
 (function () {
   console.log('Data loader script loaded');
 
-  /**
-   * Optional helper: color scheme for detection methods
-   * (global so other scripts can use it)
-   */
   window.getDetectionMethodColors = function () {
     return {
       'Oral Fluid': '#3b82f6',
@@ -18,10 +11,7 @@
     };
   };
 
-  /**
-   * Attach a single shared loader object to window so
-   * main.js can call: await dataLoader.loadDrugTests()
-   */
+
   window.dataLoader = {
     /**
      * Load full drug-testing dataset
