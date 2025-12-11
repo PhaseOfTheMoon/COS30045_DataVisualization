@@ -1,26 +1,12 @@
-// ===================================
 // CHART 7: ENFORCEMENT RESPONSE CORRELATION HEATMAP
-// Heatmap showing relationship between positive drug tests and enforcement actions
-// Research Question 7: How do fines, arrests, and charges correlate with number of positive tests?
-// ===================================
 
-/**
- * Main function to initialize Chart 7
- * Called from loaddata.js with pre-loaded data
- */
 function drawChart7Heatmap(rawData) {
     console.log('Chart 7: Initializing with', rawData.length, 'records');
     console.log('Chart 7: Sample data:', rawData.slice(0, 3));
 
-    // ===================================
-    // CHART CONFIGURATION
-    // ===================================
-
-    // Margin convention for D3.js charts
     const margin = { top: 60, right: 120, bottom: 80, left: 120 };
     const container = d3.select("#chart-7-correlation");
 
-    // Remove placeholder
     container.select(".chart-placeholder").remove();
 
     // Create responsive SVG with viewBox
@@ -32,15 +18,10 @@ function drawChart7Heatmap(rawData) {
     const width = 1100 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
 
-    // Create main chart group with margins applied
     const g = svg.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // ===================================
-    // TOOLTIP SETUP
-    // ===================================
-
-    // Create tooltip div for interactive data display
+    // Tooltip
     const tooltip = d3.select("body").append("div")
         .attr("class", "chart7-tooltip")
         .style("position", "absolute")
@@ -54,12 +35,7 @@ function drawChart7Heatmap(rawData) {
         .style("box-shadow", "0 4px 6px rgba(0,0,0,0.3)")
         .style("z-index", 10000);
 
-    // ===================================
     // DATA PROCESSING
-    // ===================================
-
-    // Process data for heatmap
-    // Aggregate by jurisdiction and enforcement type to get average positive test prediction
     const processedData = processDataForHeatmap(rawData);
 
     console.log('Chart 7: Processed heatmap data:', processedData);
@@ -67,28 +43,15 @@ function drawChart7Heatmap(rawData) {
     // Draw heatmap
     drawHeatmap(processedData);
 
-    // ===================================
-    // DATA PROCESSING FUNCTION
-    // ===================================
-
-    /**
-     * Process raw data into heatmap format
-     * Creates 3x8 matrix: 3 enforcement types × 8 jurisdictions
-     */
     function processDataForHeatmap(data) {
         const heatmapData = [];
 
-        // Define enforcement types (rows)
         const enforcementTypes = ['FINES', 'ARRESTS', 'CHARGES'];
 
-        // Define jurisdictions (columns)
         const jurisdictions = ['ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA'];
 
-        // For each enforcement type
         enforcementTypes.forEach(enfType => {
-            // For each jurisdiction
             jurisdictions.forEach(jurisdiction => {
-                // Filter data for this combination
                 const filtered = data.filter(d =>
                     d.JURISDICTION === jurisdiction
                 );
@@ -108,7 +71,6 @@ function drawChart7Heatmap(rawData) {
                 let count = 0;
 
                 filtered.forEach(d => {
-                    // Only count records where the specific enforcement type has value > 0
                     if (enfType === 'FINES' && d.FINES > 0) {
                         sum += d.prediction;
                         count++;
@@ -136,35 +98,21 @@ function drawChart7Heatmap(rawData) {
         return heatmapData;
     }
 
-    // ===================================
-    // HEATMAP DRAWING FUNCTION
-    // ===================================
-
+    // Heatmap
     function drawHeatmap(data) {
-        // Define dimensions
         const enforcementTypes = ['FINES', 'ARRESTS', 'CHARGES'];
         const jurisdictions = ['ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA'];
 
-        // Calculate cell dimensions
         const cellWidth = width / jurisdictions.length;
         const cellHeight = height / enforcementTypes.length;
 
-        // ===================================
-        // COLOR SCALE
-        // ===================================
-
-        // Get min and max values for color scale
+        // Color scale setup
         const maxValue = d3.max(data, d => d.value) || 1;
         const minValue = 0;
 
-        // Color scale: white (low) to deep blue (high)
         const colorScale = d3.scaleSequential()
             .domain([minValue, maxValue])
             .interpolator(d3.interpolateBlues);
-
-        // ===================================
-        // X-AXIS (JURISDICTIONS)
-        // ===================================
 
         const xScale = d3.scaleBand()
             .domain(jurisdictions)
@@ -195,10 +143,6 @@ function drawChart7Heatmap(rawData) {
             .attr("font-weight", "700")
             .attr("fill", "#1f2937")
             .text("Jurisdiction");
-
-        // ===================================
-        // Y-AXIS (ENFORCEMENT TYPES)
-        // ===================================
 
         const yScale = d3.scaleBand()
             .domain(enforcementTypes)
@@ -231,10 +175,6 @@ function drawChart7Heatmap(rawData) {
             .attr("font-weight", "700")
             .attr("fill", "#1f2937")
             .text("Enforcement Type");
-
-        // ===================================
-        // HEATMAP CELLS
-        // ===================================
 
         const cells = g.selectAll(".heatmap-cell")
             .data(data)
@@ -286,13 +226,11 @@ function drawChart7Heatmap(rawData) {
                     .duration(300)
                     .style("opacity", 0);
             })
-            // Entrance animation
             .transition()
             .duration(600)
             .delay((d, i) => i * 30)
             .attr("opacity", 0.9);
 
-        // Add text labels to cells (show value)
         g.selectAll(".cell-text")
             .data(data)
             .join("text")
@@ -311,15 +249,10 @@ function drawChart7Heatmap(rawData) {
             .delay((d, i) => i * 30 + 300)
             .attr("opacity", 1);
 
-        // ===================================
-        // LEGEND (COLOR SCALE)
-        // ===================================
-
         const legendWidth = 20;
         const legendHeight = height;
         const legendX = width + 30;
 
-        // Create gradient for legend
         const defs = svg.append("defs");
         const linearGradient = defs.append("linearGradient")
             .attr("id", "legend-gradient")
@@ -328,7 +261,6 @@ function drawChart7Heatmap(rawData) {
             .attr("x2", "0%")
             .attr("y2", "0%");
 
-        // Add color stops
         const numStops = 10;
         for (let i = 0; i <= numStops; i++) {
             const offset = (i / numStops) * 100;
@@ -338,7 +270,6 @@ function drawChart7Heatmap(rawData) {
                 .attr("stop-color", colorScale(value));
         }
 
-        // Legend rectangle
         g.append("rect")
             .attr("x", legendX)
             .attr("y", 0)
@@ -348,7 +279,6 @@ function drawChart7Heatmap(rawData) {
             .attr("stroke", "#d1d5db")
             .attr("stroke-width", 1);
 
-        // Legend axis
         const legendScale = d3.scaleLinear()
             .domain([maxValue, minValue])
             .range([0, legendHeight]);
@@ -364,7 +294,6 @@ function drawChart7Heatmap(rawData) {
             .selectAll("text")
             .style("font-size", "11px");
 
-        // Legend title
         g.append("text")
             .attr("x", legendX + legendWidth / 2)
             .attr("y", -20)
@@ -373,10 +302,6 @@ function drawChart7Heatmap(rawData) {
             .attr("font-weight", "600")
             .attr("fill", "#374151")
             .text("Avg Prediction");
-
-        // ===================================
-        // CHART TITLE
-        // ===================================
 
         g.append("text")
             .attr("x", width / 2)

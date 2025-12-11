@@ -1,12 +1,9 @@
-// ===================================
 // MAIN JAVASCRIPT - Drug Testing Dashboard
-// ===================================
-
 // Global chart handles
-let landscapeChart = null;       // Chart 1 - multi series line
-let methodsChart = null;         // Chart 2 - stacked area
-let demographicsChart = null;    // Chart 3 - age group bar
-let covidChart = null;           // Chart 4 - before/during/after COVID
+let landscapeChart = null;      
+let methodsChart = null;         
+let demographicsChart = null;    
+let covidChart = null;         
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function () {
@@ -30,10 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     loadData();
 });
 
-// ===================================
 // NAVIGATION
-// ===================================
-
 function initNavigation() {
     const navLinks = document.querySelectorAll('.nav-menu a');
 
@@ -41,7 +35,6 @@ function initNavigation() {
         link.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
 
-            // Only handle hash links (internal page navigation)
             // Let external links (like about.html) navigate normally
             if (targetId.startsWith('#')) {
                 e.preventDefault();
@@ -62,17 +55,12 @@ function initNavigation() {
                     this.classList.add('active');
                 }
             }
-            // For non-hash links (about.html), let browser navigate normally
         });
     });
 }
 
-// ===================================
 // FILTER CONTROLS
-// ===================================
-
 function initControls() {
-    // Jurisdiction Filter
     const jurisdictionFilter = document.getElementById('jurisdiction-filter');
     if (jurisdictionFilter) {
         jurisdictionFilter.addEventListener('change', function () {
@@ -122,10 +110,8 @@ function initControls() {
     }
 }
 
-// ===================================
-// SCROLL EFFECTS
-// ===================================
 
+// SCROLL EFFECTS
 function initScrollEffects() {
     const navbar = document.querySelector('.navbar');
 
@@ -153,24 +139,13 @@ function initScrollEffects() {
         });
     }, observerOptions);
 
-    // Enable when you add animations
-    // document.querySelectorAll('.section').forEach(section => {
-    //     section.style.opacity = '0';
-    //     section.style.transform = 'translateY(20px)';
-    //     section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    //     sectionObserver.observe(section);
-    // });
 }
 
-// ===================================
 // HERO ANIMATIONS
-// ===================================
-
 function initHeroAnimations() {
-    // Animate counting numbers after stat cards appear
     setTimeout(() => {
         animateCounters();
-    }, 1400); // Start after stat cards have animated in (0.8s + 0.6s)
+    }, 1400); 
 }
 
 function animateCounters() {
@@ -203,10 +178,7 @@ function animateCounters() {
     });
 }
 
-// ===================================
 // DATA LOADING
-// ===================================
-
 async function loadData() {
     try {
         const data = await dataLoader.loadDrugTests();
@@ -231,10 +203,7 @@ async function loadData() {
     }
 }
 
-// ===================================
 // GLOBAL CHART UPDATE DISPATCHER
-// ===================================
-
 function updateCharts(filters) {
     console.log('Updating charts with filters:', filters);
 
@@ -266,20 +235,14 @@ function updateCharts(filters) {
     }
 }
 
-// ===================================
 // PLACEHOLDER FOR CHART 5
-// ===================================
-
 function initChart5(data) {
     console.log('Initializing Chart 5: Actionable Insights');
     const container = d3.select('#chart-insights');
     container.select('.chart-placeholder').remove();
 }
 
-// ===================================
 // UTILITY FUNCTIONS
-// ===================================
-
 function formatNumber(num) {
     if (num >= 1000000) {
         return (num / 1000000).toFixed(1) + 'M';
@@ -311,10 +274,7 @@ function getJurisdictionColor(jurisdiction) {
     return colorMap[jurisdiction] || '#6b7280';
 }
 
-// ===================================
 // EXPLORE BUTTON (Hero Section)
-// ===================================
-
 function initExploreButton() {
     const exploreBtn = document.getElementById('explore-button');
     const overviewSection = document.querySelector('#overview');
@@ -342,10 +302,7 @@ function initExploreButton() {
     }
 }
 
-// ===================================
 // SCROLL ANIMATIONS (Storytelling)
-// ===================================
-
 function initScrollAnimations() {
     const navbar = document.querySelector('.navbar');
     const hero = document.querySelector('.hero');
@@ -397,10 +354,7 @@ function initScrollAnimations() {
     });
 }
 
-// ===================================
 // EXPORT FUNCTIONS (for use in separate chart files)
-// ===================================
-
 window.dashboardUtils = {
     formatNumber,
     formatPercent,

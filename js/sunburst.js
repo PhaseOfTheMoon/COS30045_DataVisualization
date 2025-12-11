@@ -1,7 +1,6 @@
-// Enhanced sunburst.js with zoom, improved tooltips, and animations
+// CHART 5&6 :  Positive Tests by Drug Type and Jurisdictions
 
 const drawSunburst = (data) => {
-  // Configuration
   const width = 400;
   const height = 400;
   const radius = Math.min(width, height) / 2 - 60;
@@ -9,7 +8,6 @@ const drawSunburst = (data) => {
   const totalWidth = width + labelAreaWidth * 2;
   const totalHeight = height + 150;
 
-  // Color schemes
   const jurisdictionColors = d3.scaleOrdinal()
     .domain(['ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA'])
     .range(['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316']);
@@ -26,7 +24,6 @@ const drawSunburst = (data) => {
   const container = d3.select("#sunburst");
   container.selectAll('*').remove();
 
-  // Calculate total for percentages
   const totalCount = d3.sum(data, d => d.count);
 
   // Create tooltip with enhanced styling
@@ -56,7 +53,6 @@ const drawSunburst = (data) => {
   const g = svg.append('g')
     .attr('transform', `translate(${labelAreaWidth + width / 2},${100 + height / 2})`);
 
-  // Add glow filter for hover effect
   const defs = svg.append('defs');
   const filter = defs.append('filter')
     .attr('id', 'glow')
@@ -91,19 +87,17 @@ const drawSunburst = (data) => {
     }))
   };
 
-  // Create hierarchy
   const root = d3.hierarchy(hierarchyData)
     .sum(d => d.value)
     .sort((a, b) => b.value - a.value);
 
-  // Create partition layout
   const partition = d3.partition()
     .size([2 * Math.PI, radius])
     .padding(0.002);
 
   partition(root);
 
-  // Create arc generator
+  // Create arc 
   const arc = d3.arc()
     .startAngle(d => d.x0)
     .endAngle(d => d.x1)
@@ -113,7 +107,6 @@ const drawSunburst = (data) => {
   // Track focused node for zoom
   let focusedNode = root;
 
-  // Zoom function - NEW FEATURE
   function zoom(p) {
     focusedNode = p;
 
@@ -134,9 +127,7 @@ const drawSunburst = (data) => {
       .attrTween('d', d => () => arc(d))
       .attr('opacity', d => {
         if (d.depth === 0) return 0;
-        // If we're at root, show all segments
         if (p === root) return 0.85;
-        // Otherwise, show focused segment and its children
         if (d.parent === p || d === p) return 0.85;
         return 0.3;
       });
@@ -180,15 +171,12 @@ const drawSunburst = (data) => {
     .on('click', function(event, d) {
       event.stopPropagation();
       if (d.depth === 1) {
-        // Click on jurisdiction (inner ring) - zoom to it
         zoom(d);
       } else if (d.depth === 2) {
-        // Click on drug (outer ring) - zoom to its parent jurisdiction
         zoom(d.parent);
       }
     })
     .on('mouseover', function(event, d) {
-      // Enhanced hover effect - brighten color and add glow
       const currentColor = d3.select(this).attr('fill');
       const brighterColor = d3.color(currentColor).brighter(0.3);
       
@@ -597,12 +585,9 @@ const drawSunburst = (data) => {
     .on('click', function(event, d) {
       event.stopPropagation();
 
-      // Zoom to parent jurisdiction when clicking line labels
       if (d.data.depth === 2) {
-        // Outer ring drug - zoom to parent jurisdiction
         zoom(d.data.parent);
       } else if (d.data.depth === 1) {
-        // Inner ring jurisdiction - zoom to it
         zoom(d.data);
       }
 
