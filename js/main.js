@@ -38,7 +38,7 @@ function initNavigation() {
     const navLinks = document.querySelectorAll('.nav-menu a');
 
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             const targetId = this.getAttribute('href');
 
             // Only handle hash links (internal page navigation)
@@ -152,14 +152,6 @@ function initScrollEffects() {
             }
         });
     }, observerOptions);
-
-    // Enable when you add animations
-    // document.querySelectorAll('.section').forEach(section => {
-    //     section.style.opacity = '0';
-    //     section.style.transform = 'translateY(20px)';
-    //     section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    //     sectionObserver.observe(section);
-    // });
 }
 
 // ===================================
@@ -225,7 +217,6 @@ async function loadData() {
         if (typeof initChart4 === 'function') {
             initChart4();
         }
-        // initChart5(data); // keep disabled for now if not used
     } catch (error) {
         console.error('Error loading data:', error);
     }
@@ -264,16 +255,6 @@ function updateCharts(filters) {
     if (covidChart && typeof covidChart.update === 'function') {
         covidChart.update({ jurisdiction, year });
     }
-}
-
-// ===================================
-// PLACEHOLDER FOR CHART 5
-// ===================================
-
-function initChart5(data) {
-    console.log('Initializing Chart 5: Actionable Insights');
-    const container = d3.select('#chart-insights');
-    container.select('.chart-placeholder').remove();
 }
 
 // ===================================
@@ -320,7 +301,7 @@ function initExploreButton() {
     const overviewSection = document.querySelector('#overview');
 
     if (exploreBtn && overviewSection) {
-        exploreBtn.addEventListener('click', function() {
+        exploreBtn.addEventListener('click', function () {
             // Unlock scrolling
             document.body.classList.remove('hero-active');
 

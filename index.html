@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Australian Drug Testing Dashboard | BITRE Road Safety Data</title>
-    <meta name="description" content="Interactive visualization of drug testing enforcement data across Australia (2008-2024)">
+    <meta name="description"
+        content="Interactive visualization of drug testing enforcement data across Australia (2008-2024)">
 
     <!-- D3.js Library -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -16,6 +18,7 @@
     <link rel="preload" href="js/loaddata.js" as="script">
 
 </head>
+
 <body>
 
     <!-- Navigation Header -->
@@ -110,10 +113,11 @@
                             Tests per 100,000 population by jurisdiction
                         </p>
                         <p style="font-size: 14px; margin: 1px;">
-                            <b>Hint:</b> 
+                            <b>Hint:</b>
                             <i>You may select the jurisdiction,scroll the time line,click the line in chart.</i>
                             <br>
-                            <i style="font-size: 12px;"><b>Tips:</b> The "Reset Filters" button will reset all used filters.</i>
+                            <i style="font-size: 12px;"><b>Tips:</b> The "Reset Filters" button will reset all used
+                                filters.</i>
                         </p>
 
                         <div class="controls-panel chart-controls-inline">
@@ -135,14 +139,8 @@
                             <div class="control-group">
                                 <label for="year-range">Year Range</label>
                                 <div class="range-container">
-                                    <input
-                                        type="range"
-                                        id="year-range"
-                                        class="control-range"
-                                        min="2008"
-                                        max="2024"
-                                        value="2024"
-                                    >
+                                    <input type="range" id="year-range" class="control-range" min="2008" max="2024"
+                                        value="2024">
                                     <span id="year-display" class="range-value">2024</span>
                                 </div>
                             </div>
@@ -182,7 +180,7 @@
                         </p>
 
                         <p style="font-size: 14px; margin: 1px;">
-                            <b>Hint:</b> 
+                            <b>Hint:</b>
                             <i>Try to click on the label.</i>
                             <br>
                             <i style="font-size: 12px;"><b>Tips:</b> Click the same label again to remove animation.</i>
@@ -216,7 +214,7 @@
                         <h4 class="chart-title">Q3: Testing by Age Group</h4>
                         <p class="chart-subtitle">Test volumes and detection rates across demographics</p>
                         <p style="font-size: 14px; margin: 1px;">
-                            <b>Hint:</b> 
+                            <b>Hint:</b>
                             <i>What will happen if put the mouse on the bar chart, can click?</i>
                         </p>
                     </div>
@@ -248,7 +246,7 @@
                         <h4 class="chart-title">Q4: COVID-19 Impact Analysis</h4>
                         <p class="chart-subtitle">Before, during, and after the pandemic (2018-2024)</p>
                         <p style="font-size: 14px; margin: 1px;">
-                            <b>Hint:</b> 
+                            <b>Hint:</b>
                             <i>Try to click on the label, can click multiple?</i>
                             <br>
                             <i style="font-size: 12px;"><b>Tips:</b> Click the same label again to remove animation.</i>
@@ -283,10 +281,11 @@
                         <h4 class="chart-title">Q5 & Q6: Positive Tests by Drug Type and Jurisdictions</h4>
                         <p class="chart-subtitle">Sunburst visualization of drug detection patterns</p>
                         <p style="font-size: 14px; margin: 1px;">
-                            <b>Hint:</b> 
+                            <b>Hint:</b>
                             <i>What will happen if click on the segment and the line?</i>
                             <br>
-                            <i style="font-size: 12px;"><b>Tips:</b> Click outside the chart to will reset the filters.</i>
+                            <i style="font-size: 12px;"><b>Tips:</b> Click outside the chart to will reset the
+                                filters.</i>
                         </p>
                     </div>
                     <div id="sunburst" class="chart-area"></div>
@@ -314,9 +313,10 @@
                 <div class="chart-container">
                     <div class="chart-header">
                         <h4 class="chart-title">Q7: Enforcement Response Correlation</h4>
-                        <p class="chart-subtitle">Intensity heatmap showing relationship between enforcement types and jurisdictions</p>
+                        <p class="chart-subtitle">Intensity heatmap showing relationship between enforcement types and
+                            jurisdictions</p>
                         <p style="font-size: 14px; margin: 1px;">
-                            <b>Hint:</b> 
+                            <b>Hint:</b>
                             <i>What happen put the mouse on the block?</i>
                         </p>
                     </div>
@@ -325,7 +325,8 @@
                     </div>
                     <div class="chart-footer">
                         <p class="chart-insight">
-                            <strong>Key Insight:</strong> Darker colors indicate higher predicted positive test rates for that enforcement type and jurisdiction combination
+                            <strong>Key Insight:</strong> Darker colors indicate higher predicted positive test rates
+                            for that enforcement type and jurisdiction combination
                         </p>
                     </div>
                 </div>
@@ -336,7 +337,7 @@
                         <h4 class="chart-title">Q8: Enforcement Severity by Jurisdiction</h4>
                         <p class="chart-subtitle">Total fines, arrests, and charges across Australian states</p>
                         <p style="font-size: 14px; margin: 1px;">
-                            <b>Hint:</b> 
+                            <b>Hint:</b>
                             <i>What happen put the mouse on the block?</i>
                         </p>
                     </div>
@@ -360,22 +361,26 @@
                     <div class="takeaway-card">
                         <div class="takeaway-icon">📍</div>
                         <h4>Geographic Patterns</h4>
-                        <p>Testing intensity varies significantly across jurisdictions, with [jurisdiction] leading in per-capita enforcement.</p>
+                        <p>Testing intensity varies significantly across jurisdictions, revealing distinct regional
+                            enforcement priorities and resource allocation patterns.</p>
                     </div>
                     <div class="takeaway-card">
                         <div class="takeaway-icon">🔬</div>
                         <h4>Method Evolution</h4>
-                        <p>Detection methods have evolved, with [method] showing the highest effectiveness rates.</p>
+                        <p>Detection methods have evolved over time, with different testing approaches showing varying
+                            effectiveness rates across jurisdictions.</p>
                     </div>
                     <div class="takeaway-card">
                         <div class="takeaway-icon">⚠️</div>
                         <h4>COVID Impact</h4>
-                        <p>Pandemic disruptions reduced testing by [X]%, with recovery patterns varying by state.</p>
+                        <p>Pandemic disruptions significantly impacted drug testing enforcement, with recovery patterns
+                            varying considerably by state.</p>
                     </div>
                     <div class="takeaway-card">
                         <div class="takeaway-icon">💡</div>
                         <h4>Future Focus</h4>
-                        <p>Data suggests [jurisdictions] could benefit from increased testing resources.</p>
+                        <p>Data insights suggest opportunities for optimizing testing resources and enforcement
+                            strategies across different jurisdictions.</p>
                     </div>
                 </div>
             </div>
@@ -411,7 +416,8 @@
                     <p>Wei Chien CHIN</p>
                     <p>Jun Zhen WONG</p>
                     <p>Aaric Ching Chian LEE</p>
-                    <p>GitHub: <a href="https://github.com/PhaseOfTheMoon/COS30045_DataVisualization" target="_blank">View Repository</a></p>
+                    <p>GitHub: <a href="https://github.com/PhaseOfTheMoon/COS30045_DataVisualization"
+                            target="_blank">View Repository</a></p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -437,4 +443,5 @@
     <script src="js/loaddata.js"></script>
 
 </body>
+
 </html>
